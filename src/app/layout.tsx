@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
+import ThemeProvider from "@/providers/ThemeProvider";
+import StoreProvider from "./StoreProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
 });
 
@@ -23,11 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${ibmPlexSans.className} antialiased`}>
+        <Toaster />
+        <StoreProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );
