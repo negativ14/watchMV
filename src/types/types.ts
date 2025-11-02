@@ -3,21 +3,21 @@ export interface UserData {
   password: string;
   language: Languages;
   kidMode: boolean;
-  favourites: {
-    movies: [];
-    tvSeries: [];
+  favorites: {
+    movies: Record<string, unknown>[];
+    tv: Record<string, unknown>[];
   };
   watchLater: {
-    movies: [];
-    tvSeries: [];
+    movies: Record<string, unknown>[];
+    tv: Record<string, unknown>[];
   };
-  // change
-  history: Array<{
-    id: number;
-    type: "movie" | "tv-series";
-    details: Record<string, unknown>;
+  watchHistory: Array<{
+    contentType: ContentMode;
+    contentDetails: Record<string, unknown>;
   }>;
+  searchHistory: string[];
 }
 
-export type ContentMode = "movie" | "tv-series";
+export type SearchMode = "ai" | "normal";
+export type ContentMode = "movie" | "tv";
 export type Languages = "en" | "hindi";

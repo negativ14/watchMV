@@ -1,29 +1,41 @@
-import { UserData } from "@/types/types";
+import { Languages } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
-  user: UserData | null;
+  email: string;
+  password: string;
+  kidMode: boolean;
+  language: Languages;
 }
 
 const initialState: UserState = {
-  user: null,
+  email: "",
+  password: "",
+  kidMode: false,
+  language: "en",
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "userData",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserData>) => {
-      state.user = action.payload;
+    setUser: (state, action: PayloadAction<UserState>) => {
+      state.email = action.payload.email;
+      state.kidMode = action.payload.kidMode;
+      state.language = action.payload.language;
+      state.password = action.payload.password;
     },
     clearUser: (state) => {
-      state.user = null;
+      state.email = "";
+      state.kidMode = false;
+      state.language = "en";
+      state.password = "";
     },
-    setLanguage: (state, action: PayloadAction<UserData["language"]>) => {
-      if (state.user) state.user.language = action.payload;
+    setLanguage: (state, action: PayloadAction<UserState["language"]>) => {
+      state.language = action.payload;
     },
     toggleKidMode: (state) => {
-      if (state.user) state.user.kidMode = !state.user.kidMode;
+      state.kidMode = !state.kidMode;
     },
   },
 });

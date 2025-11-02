@@ -2,8 +2,6 @@ import Navbar from "@/components/navbar";
 import VideoContainer from "@/components/videoContainer";
 
 export default function Home() {
-  const videoId = "3SgL3ygGm1s";
-
   return (
     <div className="relative">
       {/* <div className="absolute inset-0 bg-gradient-to-b from-movie-primary to-transparent"></div> */}
@@ -19,13 +17,17 @@ export default function Home() {
 
       <div className="border-px border-b relative">
         <div className="max-w-7xl h-full border-x-px mx-auto relative">
-          <VideoContainer videoId={videoId} />
+          <div className="h-full w-full">
+            <VideoContainer contentType="movie" />
+          </div>
           <Navbar />
 
           {/* extra border fade lines */}
-          <div className="absolute h-30 inset-x-0 -z-10 bg-transparent">
-            <div className="absolute left-0 w-px h-full bg-gradient-to-b from-border to-transparent" />
-            <div className="absolute right-0 w-px h-full bg-gradient-to-b from-border to-transparent" />
+          <div className="absolute h-full w-20 -left-20 top-0 border bg-background">
+            <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
+          </div>
+          <div className="absolute h-full w-20 -right-20 top-0 border bg-background">
+            <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
         </div>
       </div>

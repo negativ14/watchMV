@@ -1,4 +1,43 @@
-export default function VideoContainer({ videoId }: { videoId: string }) {
+"use client";
+import { options } from "@/lib/constants";
+import { useEffect, useState } from "react";
+import { Skeleton } from "./ui/skeleton";
+
+export default function VideoContainer({
+  contentType,
+}: {
+  contentType: string;
+}) {
+  const [videoId, setVideoId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const movieId = 502356;
+  const url = `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/${movieId}/videos?language=en-US`;
+
+
+  useEffect(() => {
+    const fetchVideoDetails = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(url, options);
+        const data = await response.json();
+        setVideoId(data.results[0].key);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchVideoDetails();
+  }, [url]);
+
+  if (isLoading || !videoId) {
+    return (
+      <div className="relative w-full aspect-video overflow-hidden bg-black">
+        <Skeleton className="absolute inset-0 w-full h-full" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full aspect-video overflow-hidden bg-black select-none">
       <iframe

@@ -4,9 +4,12 @@ import Link from "next/link";
 import MoreDropdown from "./MoreDropdown";
 import Menubar from "./Menubar";
 import { Search } from "lucide-react";
+import SpringModal from "./ui/springModal";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
-  const { navUrls, handleKidMode } = useNavbar();
+  const { navUrls, handleKidMode, isModalOpen, setModalOpen, currentKidMode } =
+    useNavbar();
 
   return (
     <nav className="absolute top-0 inset-x-0 px-4 md:px-8 flex justify-between items-center">
@@ -15,7 +18,6 @@ export default function Navbar() {
         <span className="text-tv-primary">V</span>
       </h1>
 
-      {/* for md++ sscreen */}
       <div className="md:flex hidden gap-6">
         <ul className="flex items-center gap-6 text-white">
           {navUrls.map((item) => (
@@ -30,16 +32,20 @@ export default function Navbar() {
 
         <button
           onClick={handleKidMode}
-          className="flex items-center group text-white gap-0.5 py-1 px-2 cursor-pointer hover:text-shadow-sm relative"
+          className={cn(
+            "flex items-center group text-white gap-0.5 py-1 px-2 cursor-pointer hover:text-shadow-sm relative",
+            currentKidMode && "text-sky-500"
+          )}
         >
           Kid Mode
           <span className="absolute bottom-0 left-0 bg-white h-px w-full rounded-sm origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
         </button>
 
+        <SpringModal isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
+
         <MoreDropdown />
       </div>
 
-      {/* phone */}
       <div className="md:hidden flex items-center gap-6 mb-4">
         <Link href={"/search"}>
           <Search className="size-5 text-white" />

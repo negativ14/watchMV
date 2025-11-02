@@ -5,7 +5,7 @@ import {
   setLanguage,
   toggleKidMode,
 } from "@/store/features/userSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Languages } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -21,6 +21,7 @@ import {
   MoonStar,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export type ItemType = {
   id: string;
@@ -32,6 +33,8 @@ export const useNavbar = () => {
   const { push } = useRouter();
   const dispatch = useAppDispatch();
   const { theme, setTheme } = useTheme();
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const currentKidMode = useAppSelector(state => state.userData.kidMode)
 
   const handleLogout = () => {
     const res = logout();
@@ -47,7 +50,12 @@ export const useNavbar = () => {
   };
 
   const handleKidMode = () => {
+    setModalOpen(true);
+  };
+
+  const handleMobileKidMode = () => {
     dispatch(toggleKidMode());
+    toast.success(`Kid Mode turned ${currentKidMode ? "Off" : "On"}`)
   };
 
   const handleNavigation = (path: string) => {
@@ -70,7 +78,7 @@ export const useNavbar = () => {
       icon: Tv,
       onClick: () => handleNavigation("/tv-series"),
     },
-    { id: "8", name: "Kid Mode", icon: Baby, onClick: handleKidMode },
+    { id: "8", name: "Kid Mode", icon: Baby, onClick: handleMobileKidMode },
     {
       id: "1",
       name: "Favorites",
@@ -146,5 +154,8 @@ export const useNavbar = () => {
     handleLanguage,
     handleNavigation,
     tabOptions,
+    isModalOpen,
+    setModalOpen,
+    currentKidMode,
   };
 };

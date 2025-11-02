@@ -11,6 +11,12 @@ import { useRouter } from "next/navigation";
 import cloud from "@/assets/images/cloud.jpg";
 import { useAppDispatch } from "@/store/hooks";
 import { setUser } from "@/store/features/userSlice";
+import {
+  setFavorites,
+  setSearchHistory,
+  setWatchHistory,
+  setWatchLater,
+} from "@/store/features/userLibrarySlice";
 
 type CurrentFormType = "signin" | "signup";
 
@@ -41,7 +47,19 @@ export default function Page() {
     );
 
     if (response?.success) {
-      dispatch(setUser(response.user));
+      console.log("this is store setter", response.user);
+      const user = {
+        email: response.user.email,
+        password: response.user.password,
+        kidMode: response.user.kidMode,
+        language: response.user.language,
+      };
+      dispatch(setUser(user));
+      dispatch(setWatchLater(response.user.watchLater));
+      dispatch(setWatchHistory(response.user.watchHistory));
+      dispatch(setSearchHistory(response.user.searchHistory));
+      dispatch(setFavorites(response.user.favorites));
+
       push("/");
     }
   };
@@ -111,7 +129,7 @@ export default function Page() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="email"
-                        className="shadow-md"
+                        className="shadow-md text-black"
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -125,7 +143,7 @@ export default function Page() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="password"
-                        className="shadow-md"
+                        className="shadow-md text-black"
                       />
                     </div>
 
@@ -155,7 +173,6 @@ export default function Page() {
                   </div>
                 </div>
               </div>
-              {/* end of 2nd of grid div */}
             </div>
           </div>
         </div>

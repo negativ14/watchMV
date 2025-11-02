@@ -105,7 +105,7 @@ export default function MoreDropdown() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleLanguage(item.id);
-                            setLanguageOptionOpen(false)
+                            setLanguageOptionOpen(false);
                           }}
                           onMouseEnter={() => setHovered(item.id)}
                           onMouseLeave={() => setHovered(null)}
