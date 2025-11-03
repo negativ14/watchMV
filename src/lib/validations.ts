@@ -51,9 +51,9 @@ export const validateCredentials = (
     }
 
     localStorage.setItem("userData", JSON.stringify(userData));
-    console.log(JSON.stringify(userData));
+
     document.cookie = "auth=true; path=/; max-age=604800";
-    console.log("ths is before creatig in store the new user data", userData);
+
     return { success: true, user: userData };
   }
 
@@ -68,7 +68,7 @@ export const validateCredentials = (
   }
 
   document.cookie = "auth=true; path=/; max-age=604800";
-  console.log("ths is before parsing to obj", existingUserObject);
+
   return { success: true, user: existingUserObject };
 };
 

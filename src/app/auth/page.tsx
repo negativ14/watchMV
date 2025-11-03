@@ -47,7 +47,6 @@ export default function Page() {
     );
 
     if (response?.success) {
-      console.log("this is store setter", response.user);
       const user = {
         email: response.user.email,
         password: response.user.password,

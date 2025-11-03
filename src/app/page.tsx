@@ -1,5 +1,8 @@
+import Footer from "@/components/Footer";
+import List from "@/components/List";
 import Navbar from "@/components/navbar";
 import VideoContainer from "@/components/videoContainer";
+import { endpoints } from "@/lib/constants";
 
 export default function Home() {
   return (
@@ -23,16 +26,25 @@ export default function Home() {
           <Navbar />
 
           {/* extra border fade lines */}
-          <div className="absolute h-full w-20 -left-20 top-0 border bg-background">
+          <div className="absolute h-full w-15 -left-15 top-0 border bg-background">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
-          <div className="absolute h-full w-20 -right-20 top-0 border bg-background">
+          <div className="absolute h-full w-15 -right-15 top-0 border bg-background">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto h-20">hii</div>
+      <div className="h-10 border-b relative">
+        <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
+        <div className="w-full max-w-7xl mx-auto h-full border-x bg-background z-0 relative"></div>
+      </div>
+
+      <List url={endpoints.trendingMovies} title="Trending" />
+      <List url={endpoints.nowPlayingMovies} title="Now Playing" />
+      <List url={endpoints.topRatedMovies} title="Top Rated" />
+      <List url={endpoints.upcomingMovies} title="Upcoming" />
+      <Footer />
     </div>
   );
 }
