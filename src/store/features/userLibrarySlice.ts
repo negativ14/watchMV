@@ -36,9 +36,17 @@ const librarySlice = createSlice({
       }>
     ) => {
       if (action.payload.contentType === "movie") {
-        state.favorites.movies.unshift(action.payload.contentDetails);
+        const existAlready = state.favorites.movies.some(
+          (item) => item.id === action.payload.contentDetails.id
+        );
+        if (!existAlready)
+          state.favorites.movies.unshift(action.payload.contentDetails);
       } else {
-        state.favorites.tv.unshift(action.payload.contentDetails);
+        const existAlready = state.favorites.tv.some(
+          (item) => item.id === action.payload.contentDetails.id
+        );
+        if (!existAlready)
+          state.favorites.tv.unshift(action.payload.contentDetails);
       }
     },
     removeFromFavroite: (
@@ -65,9 +73,17 @@ const librarySlice = createSlice({
       }>
     ) => {
       if (action.payload.contentType === "movie") {
-        state.watchLater.movies.unshift(action.payload.contentDetails);
+        const existAlready = state.watchLater.movies.some(
+          (item) => item.id === action.payload.contentDetails.id
+        );
+        if (!existAlready)
+          state.watchLater.movies.unshift(action.payload.contentDetails);
       } else {
-        state.watchLater.tv.unshift(action.payload.contentDetails);
+        const existAlready = state.watchLater.tv.some(
+          (item) => item.id === action.payload.contentDetails.id
+        );
+        if (!existAlready)
+          state.watchLater.tv.unshift(action.payload.contentDetails);
       }
     },
     removeFromWatchLater: (
@@ -93,7 +109,18 @@ const librarySlice = createSlice({
         contentDetails: Record<string, unknown>;
       }>
     ) => {
-      state.watchHistory.unshift(action.payload);
+      const existAlready = state.watchHistory.some(
+        (item) => item.contentDetails.id === action.payload.contentDetails.id
+      );
+      if (existAlready) {
+        const newFilteredHistory = state.watchHistory.filter(
+          (item) => item.contentDetails.id !== action.payload.contentDetails.id
+        );
+        newFilteredHistory.unshift(action.payload);
+        state.watchHistory = newFilteredHistory;
+      } else {
+        state.watchHistory.unshift(action.payload);
+      }
     },
     removeFromWatchHistory: (state, action: PayloadAction<{ id: number }>) => {
       const newWatchHistory = state.watchHistory.filter(

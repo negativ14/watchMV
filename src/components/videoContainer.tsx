@@ -10,6 +10,8 @@ import { Skeleton } from "./ui/skeleton";
 import { ContentMode } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import useWatchLater from "@/hooks/useWatchLater";
+import { useAppSelector } from "@/store/hooks";
 
 export type TMDBContent = {
   id: number;
@@ -36,6 +38,10 @@ export default function VideoContainer({
   const [videoId, setVideoId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contentDetail, setContentDetail] = useState<TMDBContent | null>(null);
+  const { handleAddToWatchLater } = useWatchLater();
+  const currentContentMode = useAppSelector(
+    (state) => state.uiData.contentMode
+  );
 
   const fetchContent = async () => {
     const response = await fetch(
@@ -107,6 +113,30 @@ export default function VideoContainer({
         }
       } catch (error) {
         console.error("Error while fetching video!", error);
+        const video = (
+          contentType === "movie" ? FALLBACK_TRAILERS : FALLBACK_TV_TRAILERS
+        )[
+          Math.floor(
+            Math.random() *
+              (contentType === "tv"
+                ? FALLBACK_TV_TRAILERS.length
+                : FALLBACK_TRAILERS.length)
+          )
+        ];
+
+        setContentDetail({
+          id: video.id,
+          poster_path: video.poster_path,
+          backdrop_path: null,
+          overview: video.overview,
+          popularity: 0,
+          vote_average: 0,
+          title: video.title,
+          original_title: video.title,
+          name: video.name,
+          original_name: video.name,
+        });
+        setVideoId(video.key);
       } finally {
         setIsLoading(false);
       }
@@ -133,12 +163,12 @@ export default function VideoContainer({
       <div className="absolute inset-0 bg-gradient-to-b from-black to-transparent" />
 
       <motion.div
-        initial={{ y:-20, opacity: 0 }} 
+        initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{
-          duration: 0.6, 
-          ease: [0.4, 0, 0.2, 1], 
-          delay: 0.2, 
+          duration: 0.6,
+          ease: [0.4, 0, 0.2, 1],
+          delay: 0.2,
         }}
         className="absolute max-w-lg bottom-25 left-5 hidden md:flex flex-col gap-6"
       >
@@ -162,7 +192,15 @@ export default function VideoContainer({
           >
             Play now
           </button>
-          <button className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5">
+          <button
+            onClick={() =>
+              handleAddToWatchLater({
+                contentType: currentContentMode,
+                contentDetails: contentDetail as Record<string, unknown>,
+              })
+            }
+            className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5"
+          >
             watch later
           </button>
         </div>

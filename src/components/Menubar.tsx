@@ -36,7 +36,7 @@ export default function Menubar() {
   }, [isMenuOpen]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative z-10" ref={dropdownRef}>
       <MenuIcon
         className="size-5 text-white"
         onClick={() => {

@@ -38,13 +38,13 @@ export default function Page() {
     vote_count: 1886,
   };
 
-  const { handleAddToWatchLater, handleRemoveFromWatchLater } = useWatchLater();
+  const { handleAddToWatchHistory, handleRemoveFromWatchHistory } = useWatchHistory();
 
   return (
     <div className="flex gap-6">
       <button
         onClick={() => {
-          handleAddToWatchLater({
+          handleAddToWatchHistory({
             contentType: "movie",
             contentDetails: movie,
           });
@@ -54,7 +54,7 @@ export default function Page() {
       </button>
       <button
         onClick={() => {
-          handleRemoveFromWatchLater("movie", 6401415);
+          handleRemoveFromWatchHistory(6401415);
         }}
       >
         Remove
