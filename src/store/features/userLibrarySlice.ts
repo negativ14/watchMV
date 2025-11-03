@@ -41,6 +41,22 @@ const librarySlice = createSlice({
         state.favorites.tv.unshift(action.payload.contentDetails);
       }
     },
+    removeFromFavroite: (
+      state,
+      action: PayloadAction<{ contentType: ContentMode; id: number }>
+    ) => {
+      if (action.payload.contentType === "movie") {
+        const newFavoritesMovies = state.favorites.movies.filter(
+          (item) => item.id !== action.payload.id
+        );
+        state.favorites.movies = newFavoritesMovies;
+      } else {
+        const newFavoritesTV = state.favorites.tv.filter(
+          (item) => item.id !== action.payload.id
+        );
+        state.favorites.tv = newFavoritesTV;
+      }
+    },
     addToWatchLater: (
       state,
       action: PayloadAction<{
@@ -54,6 +70,22 @@ const librarySlice = createSlice({
         state.watchLater.tv.unshift(action.payload.contentDetails);
       }
     },
+    removeFromWatchLater: (
+      state,
+      action: PayloadAction<{ contentType: ContentMode; id: number }>
+    ) => {
+      if (action.payload.contentType === "movie") {
+        const newWatchLater = state.watchLater.movies.filter(
+          (item) => item.id !== action.payload.id
+        );
+        state.watchLater.movies = newWatchLater;
+      } else {
+        const newWatchLaterTV = state.watchLater.tv.filter(
+          (item) => item.id !== action.payload.id
+        );
+        state.watchLater.tv = newWatchLaterTV;
+      }
+    },
     addToWatchHistory: (
       state,
       action: PayloadAction<{
@@ -63,8 +95,24 @@ const librarySlice = createSlice({
     ) => {
       state.watchHistory.unshift(action.payload);
     },
+    removeFromWatchHistory: (state, action: PayloadAction<{ id: number }>) => {
+      const newWatchHistory = state.watchHistory.filter(
+        (item) => item.contentDetails.id !== action.payload.id
+      );
+
+      state.watchHistory = newWatchHistory;
+    },
     addToSearchHistory: (state, action: PayloadAction<string>) => {
       state.searchHitory.unshift(action.payload);
+    },
+    removeFromSearchHistory: (
+      state,
+      action: PayloadAction<{ index: number }>
+    ) => {
+      const newHistory = state.searchHitory.filter(
+        (item, index) => index !== action.payload.index
+      );
+      state.searchHitory = newHistory;
     },
     setFavorites: (
       state,
@@ -110,5 +158,9 @@ export const {
   setWatchLater,
   setWatchHistory,
   setSearchHistory,
+  removeFromFavroite,
+  removeFromSearchHistory,
+  removeFromWatchHistory,
+  removeFromWatchLater,
 } = librarySlice.actions;
 export default librarySlice.reducer;

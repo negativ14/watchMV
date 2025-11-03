@@ -7,6 +7,7 @@ export interface TMDBItem {
   adult: boolean;
   original_title?: string;
   poster_path?: string;
+  original_name?: string;
 }
 
 export default function Cards({ list }: { list: TMDBItem[] }) {
@@ -28,7 +29,7 @@ export default function Cards({ list }: { list: TMDBItem[] }) {
             />
           </div>
           <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-            {item.original_title}
+            {item.original_title || item.original_name}
           </p>
         </div>
       ))}

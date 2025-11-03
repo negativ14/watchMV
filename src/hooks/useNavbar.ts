@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import { setContentMode } from "@/store/features/uiSlice";
 
 export type ItemType = {
   id: string;
@@ -34,7 +35,10 @@ export const useNavbar = () => {
   const dispatch = useAppDispatch();
   const { theme, setTheme } = useTheme();
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const currentKidMode = useAppSelector(state => state.userData.kidMode)
+  const currentKidMode = useAppSelector((state) => state.userData.kidMode);
+  const currentContentMode = useAppSelector(
+    (state) => state.uiData.contentMode
+  );
 
   const handleLogout = () => {
     const res = logout();
@@ -55,7 +59,7 @@ export const useNavbar = () => {
 
   const handleMobileKidMode = () => {
     dispatch(toggleKidMode());
-    toast.success(`Kid Mode turned ${currentKidMode ? "Off" : "On"}`)
+    toast.success(`Kid Mode turned ${currentKidMode ? "Off" : "On"}`);
   };
 
   const handleNavigation = (path: string) => {
@@ -68,15 +72,25 @@ export const useNavbar = () => {
 
   const navUrls = [
     { id: "search", path: "/search", name: "Search" },
-    { id: "tv-series", path: "/tv-series", name: "TV Series" },
+    {
+      id: "tv-series",
+      path: currentContentMode === "movie" ? "/tv-series" : "/",
+      name: currentContentMode === "movie" ? "TV Series" : "Home",
+      onClick: () => {
+        dispatch(
+          setContentMode(currentContentMode === "movie" ? "tv" : "movie")
+        );
+      },
+    },
   ];
 
   const mobileOptions = [
     {
       id: "7",
-      name: "TV Series",
+      name: currentContentMode === "movie" ? "TV Series" : "Home",
       icon: Tv,
-      onClick: () => handleNavigation("/tv-series"),
+      onClick: () =>
+        handleNavigation(currentContentMode === "movie" ? "/tv-series" : "/"),
     },
     { id: "8", name: "Kid Mode", icon: Baby, onClick: handleMobileKidMode },
     {

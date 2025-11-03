@@ -79,16 +79,16 @@ export default function MoreDropdown() {
                 }}
                 className="relative cursor-pointer"
               >
-                {hovered === item.id && (
-                  <motion.div
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="absolute inset-0 bg-foreground/10 rounded-md"
-                    layoutId="hovered"
-                  />
-                )}
                 <span className="flex items-center text-sm px-3 py-2 cursor-pointer tracking-tight gap-3 text-muted-foreground hover:text-foreground transition-all duration-300">
                   {<item.icon className="size-3.5" />} {item.name}
                 </span>
+                {hovered === item.id && (
+                  <motion.div
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    className="absolute inset-0 bg-foreground/10 rounded-md pointer-events-none"
+                    layoutId="hovered"
+                  />
+                )}
                 <AnimatePresence>
                   {item.id === "4" && moreIsOpen && isLanguageOptionOpen && (
                     <motion.ul

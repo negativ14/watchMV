@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="border-b">
       <div className="flex flex-col gap-4 max-w-7xl mx-auto border-x">
-        <div className="flex flex-col gap-1 px-4 pt-4">
+        <div className="flex flex-col gap-1 p-4">
           <p className="text-sm text-muted-foreground">
             © 2025 Rohit. All rights reserved.{" "}
           </p>
@@ -14,8 +14,10 @@ export default function Footer() {
             movie data from TMDB.
           </p>
         </div>
+      </div>
 
-        <div className="flex justify-between border-t px-4 py-2">
+      <div className="border-t">
+        <div className="flex justify-between  px-4 py-2 mx-auto max-w-7xl border-x">
           <h2 className="text-muted-foreground">
             Design and Developed by{" "}
             <span className="text-foreground">Rohit</span>

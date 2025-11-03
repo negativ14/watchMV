@@ -21,8 +21,8 @@ export default function Navbar() {
       <div className="md:flex hidden gap-6">
         <ul className="flex items-center gap-6 text-white">
           {navUrls.map((item) => (
-            <li key={item.id} className="relative group">
-              <Link href={item.path} className="px-1.5">
+            <li key={item.id} onClick={item.onClick} className="relative group cursor-pointer">
+              <Link href={item.path} className="px-1.5 py-0.5">
                 {item.name}
               </Link>
               <span className="absolute -bottom-1 left-0 bg-white h-px w-full rounded-sm origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />

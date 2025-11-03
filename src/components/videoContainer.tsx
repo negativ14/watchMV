@@ -1,5 +1,10 @@
 "use client";
-import { BASE_URL, FALLBACK_TRAILERS, options } from "@/lib/constants";
+import {
+  BASE_URL,
+  FALLBACK_TRAILERS,
+  FALLBACK_TV_TRAILERS,
+  options,
+} from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { ContentMode } from "@/types/types";
@@ -73,11 +78,30 @@ export default function VideoContainer({
         setContentDetail(contentDetails);
         const videoDetails = await fetchVideoDetails(contentDetails.id);
         if (!videoDetails?.key) {
-          const key =
-            FALLBACK_TRAILERS[
-              Math.floor(Math.random() * FALLBACK_TRAILERS.length)
-            ];
-          setVideoId(key);
+          const video = (
+            contentType === "tv" ? FALLBACK_TV_TRAILERS : FALLBACK_TRAILERS
+          )[
+            Math.floor(
+              Math.random() *
+                (contentType === "tv"
+                  ? FALLBACK_TV_TRAILERS.length
+                  : FALLBACK_TRAILERS.length)
+            )
+          ];
+
+          setContentDetail({
+            id: video.id,
+            poster_path: video.poster_path,
+            backdrop_path: null,
+            overview: video.overview,
+            popularity: 0,
+            vote_average: 0,
+            title: video.title,
+            original_title: video.title,
+            name: video.name,
+            original_name: video.name,
+          });
+          setVideoId(video.key);
         } else {
           setVideoId(videoDetails.key);
         }
@@ -108,13 +132,15 @@ export default function VideoContainer({
       ></iframe>
       <div className="absolute inset-0 bg-gradient-to-b from-black to-transparent" />
 
-      {/* movie video details */}
       <motion.div
-        initial={{ y: -20, opacity: 0 }}
+        initial={{ y:-20, opacity: 0 }} 
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="absolute max-w-lg bottom-0 -translate-y-11/12 left-5 hidden md:flex flex-col gap-6"
+        transition={{
+          duration: 0.6, 
+          ease: [0.4, 0, 0.2, 1], 
+          delay: 0.2, 
+        }}
+        className="absolute max-w-lg bottom-25 left-5 hidden md:flex flex-col gap-6"
       >
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold text-4xl text-white text-shadow-lg">
@@ -131,7 +157,7 @@ export default function VideoContainer({
               "text-white text-xl rounded-md font-medium hover:opacity-90 cursor-pointer px-4 py-1.5",
               contentType === "movie"
                 ? "bg-gradient-to-br from-movie-primary to-sky-600"
-                : "bg-gradient-to-br from-tv-primary to-sky-600"
+                : "bg-gradient-to-br from-tv-primary to-pink-400"
             )}
           >
             Play now
