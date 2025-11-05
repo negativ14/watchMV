@@ -38,13 +38,13 @@ export default function LibraryCards({
   const { handleRemoveFromWatchHistory } = useWatchHistory();
 
   const firstList =
-    (cardCategory === "favorite" && favorites.movies) ||
-    (cardCategory === "watchLater" && watchLater.movies) ||
+    (cardCategory === "favorite" && favorites?.movies) ||
+    (cardCategory === "watchLater" && watchLater?.movies) ||
     [];
 
   const secondList =
-    (cardCategory === "favorite" && favorites.tv) ||
-    (cardCategory === "watchLater" && watchLater.tv) ||
+    (cardCategory === "favorite" && favorites?.tv) ||
+    (cardCategory === "watchLater" && watchLater?.tv) ||
     [];
 
   const handleMovieClick = (id: number) => {
@@ -181,7 +181,7 @@ export default function LibraryCards({
 
       <div className="relative w-full flex transition-all duration-300 divide-x overflow-x-scroll scroll-hide">
         {cardCategory === "watchHistory" &&
-          watchHistory.map((item) => (
+          watchHistory?.map((item) => (
             <div
               key={item.contentDetails.id as number}
               className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
