@@ -21,3 +21,5 @@ export interface UserData {
 export type SearchMode = "ai" | "normal";
 export type ContentMode = "movie" | "tv";
 export type Languages = "en" | "hindi";
+export type CardCategory = "favorite" | "watchLater" | "watchHistory";
+

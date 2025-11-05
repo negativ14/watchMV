@@ -43,7 +43,7 @@ export const useNavbar = () => {
   const handleLogout = () => {
     const res = logout();
     if (res.success) {
-      dispatch(clearUser());
+      // dispatch(clearUser());
       push("/auth");
       toast.success("Logged out successfully");
     }

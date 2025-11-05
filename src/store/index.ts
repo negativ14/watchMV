@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/userSlice";
 import uiReducer from "./features/uiSlice";
 import libraryReducer from "./features/userLibrarySlice";
+import { localStorageMiddleware } from "./middleware/localStorageMiddleware";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,6 +11,9 @@ export const makeStore = () => {
       uiData: uiReducer,
       libraryData: libraryReducer,
     },
+    middleware: (getDefaultMiddleware) => (
+      getDefaultMiddleware().concat(localStorageMiddleware)
+    ),
   });
 };
 

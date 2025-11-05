@@ -3,7 +3,7 @@ import { TbBrandGithubFilled } from "react-icons/tb";
 
 export default function Footer() {
   return (
-    <footer className="border-b">
+    <footer className="border-y border-foreground/30">
       <div className="flex flex-col gap-4 max-w-7xl mx-auto border-x">
         <div className="flex flex-col gap-1 p-4">
           <p className="text-sm text-muted-foreground">
@@ -16,11 +16,19 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t">
+      <div className="border-t border-foreground/30">
         <div className="flex justify-between  px-4 py-2 mx-auto max-w-7xl border-x">
           <h2 className="text-muted-foreground">
             Design and Developed by{" "}
-            <span className="text-foreground">Rohit</span>
+            <a
+              href="https://negativ.in"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span className="text-foreground underline underline-offset-4">
+                Rohit
+              </span>
+            </a>
           </h2>
 
           <div className="flex gap-4 items-center text-foreground/80">

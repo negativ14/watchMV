@@ -1,6 +1,8 @@
 "use client";
 import { BaseImageUrl } from "@/lib/constants";
+import { useAppSelector } from "@/store/hooks";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export interface TMDBItem {
   id: number;
@@ -11,11 +13,24 @@ export interface TMDBItem {
 }
 
 export default function Cards({ list }: { list: TMDBItem[] }) {
+  const { push } = useRouter();
+  const currentContentMode = useAppSelector(
+    (state) => state.uiData.contentMode
+  );
+
+  const handleCard = () => {
+    if (currentContentMode === "movie") {
+      push("/movie-details");
+    } else {
+      push("/tv-details");
+    }
+  };
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">
       {list.map((item) => (
         <div
           key={item.id}
+          onClick={() => handleCard}
           className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
         >
           <div className="relative flex flex-col items-center px-4 py-6">
