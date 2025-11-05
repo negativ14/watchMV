@@ -1,6 +1,7 @@
 "use client";
 import { BaseImageUrl } from "@/lib/constants";
-import { useAppSelector } from "@/store/hooks";
+import { setContentMode } from "@/store/features/uiSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -17,20 +18,24 @@ export default function Cards({ list }: { list: TMDBItem[] }) {
   const currentContentMode = useAppSelector(
     (state) => state.uiData.contentMode
   );
+  const dispatch = useAppDispatch();
 
-  const handleCard = () => {
+  const handleCard = (id: number) => {
     if (currentContentMode === "movie") {
-      push("/movie-details");
+      dispatch(setContentMode("movie"));
+      push(`/movie-details/${id}`);
     } else {
-      push("/tv-details");
+      dispatch(setContentMode("tv"));
+      push(`/tv-series-details/${id}`);
     }
   };
+
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">
       {list.map((item) => (
         <div
           key={item.id}
-          onClick={() => handleCard}
+          onClick={() => handleCard(item.id)}
           className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
         >
           <div className="relative flex flex-col items-center px-4 py-6">

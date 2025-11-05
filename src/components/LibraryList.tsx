@@ -2,9 +2,11 @@ import LibraryCards from "./LibraryCard";
 import { CardCategory } from "@/types/types";
 
 export default async function LibraryList({
+  id,
   title,
   cardCategory,
 }: {
+  id?: string;
   title: string;
   cardCategory: CardCategory;
 }) {

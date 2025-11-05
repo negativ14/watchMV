@@ -27,8 +27,14 @@ export default function Page() {
       </div>
 
       <LibraryList title="Favroites" cardCategory="favorite" />
-      <LibraryList title="WatchLater" cardCategory="watchLater" />
-      <LibraryList title="WatchHistory" cardCategory="watchHistory" />
+      <div id="watchLater">
+        <LibraryList title="WatchLater" cardCategory="watchLater" />
+      </div>
+
+      <div id="history">
+        <LibraryList title="WatchHistory" cardCategory="watchHistory" />
+      </div>
+
       <Footer />
     </main>
   );

@@ -1,10 +1,6 @@
 "use client";
 import { logout } from "@/lib/validations";
-import {
-  clearUser,
-  setLanguage,
-  toggleKidMode,
-} from "@/store/features/userSlice";
+import { setLanguage, toggleKidMode } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Languages } from "@/types/types";
 import { useRouter } from "next/navigation";
@@ -43,7 +39,6 @@ export const useNavbar = () => {
   const handleLogout = () => {
     const res = logout();
     if (res.success) {
-      // dispatch(clearUser());
       push("/auth");
       toast.success("Logged out successfully");
     }
@@ -103,13 +98,13 @@ export const useNavbar = () => {
       id: "2",
       name: "Watch Later",
       icon: Clock,
-      onClick: () => handleNavigation("/library"),
+      onClick: () => handleNavigation("/library#watchLater"),
     },
     {
       id: "3",
       name: "History",
       icon: History,
-      onClick: () => handleNavigation("/library"),
+      onClick: () => handleNavigation("/library#history"),
     },
     {
       id: "4",
@@ -137,13 +132,13 @@ export const useNavbar = () => {
       id: "2",
       name: "Watch Later",
       icon: Clock,
-      onClick: () => handleNavigation("/library"),
+      onClick: () => handleNavigation("/library#watchLater"),
     },
     {
       id: "3",
       name: "History",
       icon: History,
-      onClick: () => handleNavigation("/library"),
+      onClick: () => handleNavigation("/library#history"),
     },
     {
       id: "4",

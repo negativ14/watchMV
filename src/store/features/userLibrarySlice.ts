@@ -170,6 +170,9 @@ const librarySlice = createSlice({
     ) => {
       state.watchHistory = action.payload;
     },
+    clearWatchHistory: (state) => {
+      state.watchHistory = [];
+    },
     setSearchHistory: (state, action: PayloadAction<string[]>) => {
       state.searchHitory = action.payload;
     },
@@ -189,5 +192,6 @@ export const {
   removeFromSearchHistory,
   removeFromWatchHistory,
   removeFromWatchLater,
+  clearWatchHistory,
 } = librarySlice.actions;
 export default librarySlice.reducer;

@@ -1,5 +1,6 @@
 import {
   addToWatchHistory,
+  clearWatchHistory,
   removeFromWatchHistory,
 } from "@/store/features/userLibrarySlice";
 import { useAppDispatch } from "@/store/hooks";
@@ -22,5 +23,13 @@ export default function useWatchHistory() {
     dispatch(removeFromWatchHistory({ id }));
   };
 
-  return { handleAddToWatchHistory, handleRemoveFromWatchHistory };
+  const handleClearWatchHistory = () => {
+    dispatch(clearWatchHistory());
+  };
+
+  return {
+    handleAddToWatchHistory,
+    handleRemoveFromWatchHistory,
+    handleClearWatchHistory,
+  };
 }

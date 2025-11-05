@@ -1,19 +1,19 @@
 "use client";
-import FilledBookMark from "@/assets/svgs/FilledBookMark";
-import PinkHeartIcon from "@/assets/svgs/PinkHeartIcon";
 import useFavorite from "@/hooks/useFavorite";
 import useWatchHistory from "@/hooks/useWatchHistory";
 import useWatchLater from "@/hooks/useWatchLater";
 import { BaseImageUrl } from "@/lib/constants";
 import { useAppSelector } from "@/store/hooks";
 import { CardCategory } from "@/types/types";
-import { CircleX } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "./ui/button";
+import EmptyState from "./EmptyState";
 
 export interface TMDBItem {
   id: number;
@@ -35,7 +35,8 @@ export default function LibraryCards({
   );
   const { handleRemoveFromFavorite } = useFavorite();
   const { handleRemoveFromWatchLater } = useWatchLater();
-  const { handleRemoveFromWatchHistory } = useWatchHistory();
+  const { handleRemoveFromWatchHistory, handleClearWatchHistory } =
+    useWatchHistory();
 
   const firstList =
     (cardCategory === "favorite" && favorites?.movies) ||
@@ -70,156 +71,201 @@ export default function LibraryCards({
   };
 
   return (
-    <div>
+    <div className="relative">
+      {cardCategory === "watchHistory" && watchHistory.length > 0 && (
+        <Button
+          onClick={handleClearWatchHistory}
+          variant="secondary"
+          size={"sm"}
+          className="hover:text-destructive absolute right-2 -top-10 cursor-pointer"
+        >
+          Clear history
+        </Button>
+      )}
+
       <div>
         {(cardCategory === "favorite" || cardCategory === "watchLater") && (
           <div className="h-10 border-b flex items-center">
-            <h2 className="font-medium tracking-tight px-4 mx-auto">Movies</h2>
+            <h2 className="font-medium text-xl tracking-tight px-4 mx-auto">
+              Movies<span className="text-sm ml-2 text-muted-foreground">({firstList.length})</span>
+            </h2>
           </div>
         )}
         <div className="relative w-full flex transition-all duration-300 divide-x border-b overflow-x-scroll scroll-hide">
-          {firstList.map((item, index) => (
-            <div
-              key={item.id as number ?? index}
-              className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
-            >
-              <div className="relative flex flex-col items-center px-4 py-6">
-                <Image
-                  width={128}
-                  height={192}
-                  src={`${BaseImageUrl}${item.poster_path as string}`}
-                  alt="poster image"
-                  priority
-                  className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                />
-              </div>
-              <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-                {(item.original_title as string) ||
-                  (item.original_name as string)}
-              </p>
+          {firstList.length > 0 ? (
+            firstList.map((item, index) => (
+              <div
+                key={(item.id as number) ?? index}
+                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+              >
+                <div className="relative flex flex-col items-center px-4 py-6">
+                  <Image
+                    width={128}
+                    height={192}
+                    src={`${BaseImageUrl}${item.poster_path as string}`}
+                    alt="poster image"
+                    priority
+                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                  />
+                </div>
+                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
+                  {(item.original_title as string) ||
+                    (item.original_name as string)}
+                </p>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    onClick={() => handleMovieClick(item.id as number)}
-                    className="absolute top-1 right-1 z-10 bg-background rounded-full p-1 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-muted-foreground hover:text-foreground opacity-30 group-hover:opacity-100"
-                  >
-                    {cardCategory === "favorite" ? (
-                      <PinkHeartIcon className="size-4" />
-                    ) : (
-                      <FilledBookMark className="size-4" />
-                    )}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{`Remove from ${
-                    cardCategory === "favorite"
-                      ? "favorite"
-                      : cardCategory === "watchLater" && "watch later"
-                  }`}</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          ))}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleMovieClick(item.id as number);
+                      }}
+                      className="absolute top-1 right-1 z-10 bg-background rounded-full p-1 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-destructive opacity-0 group-hover:opacity-100"
+                    >
+                      <Trash2 className="size-4.5" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{`Remove from ${
+                      cardCategory === "favorite"
+                        ? "favorite"
+                        : cardCategory === "watchLater" && "watch later"
+                    }`}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            ))
+          ) : cardCategory === "favorite" ? (
+            <EmptyState
+              message="You haven’t added any favorite movies yet!"
+              contentType="movie"
+            />
+          ) : (
+            cardCategory !== "watchHistory" && (
+              <EmptyState
+                message="Your Watch Later movie list is empty."
+                contentType="movie"
+              />
+            )
+          )}
         </div>
       </div>
 
       <div>
         {(cardCategory === "favorite" || cardCategory === "watchLater") && (
           <div className="h-10 border-b flex items-center">
-            <h2 className="font-medium tracking-tight px-4 mx-auto">
-              TV Series
+            <h2 className="font-medium text-xl tracking-tight px-4 mx-auto">
+              TV Series <span className="text-sm ml-1 text-muted-foreground">({secondList.length})</span>
             </h2>
           </div>
         )}
         <div className="relative w-full flex transition-all duration-300 divide-x overflow-x-scroll scroll-hide">
-          {secondList.map((item) => (
-            <div
-              key={item.id as number}
-              className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
-            >
-              <div className="relative flex flex-col items-center px-4 py-6">
-                <Image
-                  width={128}
-                  height={192}
-                  src={`${BaseImageUrl}${item.poster_path as string}`}
-                  alt="poster image"
-                  priority
-                  className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                />
-              </div>
-              <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground relative">
-                {(item.original_title as string) ||
-                  (item.original_name as string)}
-              </p>
+          {secondList.length > 0 ? (
+            secondList.map((item) => (
+              <div
+                key={item.id as number}
+                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+              >
+                <div className="relative flex flex-col items-center px-4 py-6">
+                  <Image
+                    width={128}
+                    height={192}
+                    src={`${BaseImageUrl}${item.poster_path as string}`}
+                    alt="poster image"
+                    priority
+                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                  />
+                </div>
+                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground relative">
+                  {(item.original_title as string) ||
+                    (item.original_name as string)}
+                </p>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    onClick={() => handleTVClick(item.id as number)}
-                    className="absolute top-1 right-1 z-10 bg-background rounded-full p-1 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-muted-foreground hover:text-foreground opacity-30 group-hover:opacity-100"
-                  >
-                    {cardCategory === "favorite" ? (
-                      <PinkHeartIcon className="size-4" />
-                    ) : (
-                      <FilledBookMark className="size-4" />
-                    )}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{`Remove from ${
-                    cardCategory === "favorite"
-                      ? "favorite"
-                      : cardCategory === "watchLater" && "watch later"
-                  }`}</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          ))}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTVClick(item.id as number);
+                      }}
+                      className="absolute top-1 right-1 z-10 bg-background rounded-full p-1 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-destructive opacity-0 group-hover:opacity-100"
+                    >
+                      <Trash2 className="size-4.5" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{`Remove from ${
+                      cardCategory === "favorite"
+                        ? "favorite"
+                        : cardCategory === "watchLater" && "watch later"
+                    }`}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            ))
+          ) : cardCategory === "favorite" ? (
+            <EmptyState
+              message="You haven’t added any favorite tv-series yet!"
+              contentType="tv"
+            />
+          ) : (
+            cardCategory !== "watchHistory" && (
+              <EmptyState
+                message="Your Watch Later tv-series list is empty."
+                contentType="tv"
+              />
+            )
+          )}
         </div>
       </div>
 
       <div className="relative w-full flex transition-all duration-300 divide-x overflow-x-scroll scroll-hide">
-        {cardCategory === "watchHistory" &&
-          watchHistory?.map((item) => (
-            <div
-              key={item.contentDetails.id as number}
-              className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
-            >
-              <div className="relative flex flex-col items-center px-4 py-6">
-                <Image
-                  width={128}
-                  height={192}
-                  src={`${BaseImageUrl}${
-                    item.contentDetails.poster_path as string
-                  }`}
-                  alt="poster image"
-                  priority
-                  className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                />
-              </div>
-              <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-                {(item.contentDetails.original_title as string) ||
-                  (item.contentDetails.original_name as string)}
-              </p>
+        {cardCategory === "watchHistory" && watchHistory?.length > 0
+          ? watchHistory?.map((item) => (
+              <div
+                key={item.contentDetails.id as number}
+                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+              >
+                <div className="relative flex flex-col items-center px-4 py-6">
+                  <Image
+                    width={128}
+                    height={192}
+                    src={`${BaseImageUrl}${
+                      item.contentDetails.poster_path as string
+                    }`}
+                    alt="poster image"
+                    priority
+                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                  />
+                </div>
+                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
+                  {(item.contentDetails.original_title as string) ||
+                    (item.contentDetails.original_name as string)}
+                </p>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    onClick={() =>
-                      handleWatchHistoryClick(item.contentDetails.id as number)
-                    }
-                    className="absolute top-1 right-1 z-10 bg-background rounded-full p-0.5 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-muted-foreground hover:text-foreground opacity-30 group-hover:opacity-100"
-                  >
-                    <CircleX className="size-4" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete from watch history.</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          ))}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWatchHistoryClick(
+                          item.contentDetails.id as number
+                        );
+                      }}
+                      className="absolute top-2 right-2 z-10 bg-background rounded-full p-1 group-hover:scale-[1.2] transition-all duration-300 ease-in-out text-destructive group-hover:text-destructive opacity-0 group-hover:opacity-100"
+                    >
+                      <Trash2 className="size-4.5" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Delete from watch history.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            ))
+          : cardCategory === "watchHistory" && (
+              <EmptyState message="Your have not watched anything yet!" />
+            )}
       </div>
     </div>
   );
