@@ -72,7 +72,7 @@ export default function LibraryCards({
 
   return (
     <div className="relative">
-      {cardCategory === "watchHistory" && watchHistory.length > 0 && (
+      {cardCategory === "watchHistory" && watchHistory?.length > 0 && (
         <Button
           onClick={handleClearWatchHistory}
           variant="secondary"

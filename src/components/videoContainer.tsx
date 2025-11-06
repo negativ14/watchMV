@@ -5,13 +5,14 @@ import {
   FALLBACK_TV_TRAILERS,
   options,
 } from "@/lib/constants";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { ContentMode } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import useWatchLater from "@/hooks/useWatchLater";
 import { useAppSelector } from "@/store/hooks";
+import useVideo from "@/hooks/useVideo";
 
 export type TMDBContent = {
   id: number;
@@ -35,13 +36,44 @@ export default function VideoContainer({
 }: {
   contentType: ContentMode;
 }) {
-  const [videoId, setVideoId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [contentDetail, setContentDetail] = useState<TMDBContent | null>(null);
   const { handleAddToWatchLater } = useWatchLater();
   const currentContentMode = useAppSelector(
     (state) => state.uiData.contentMode
   );
+  const {
+    handleSetMovieVideo,
+    handleSetTVVideo,
+    handleSetMovieKey,
+    handleSetTVKey,
+  } = useVideo();
+  const currentMovie = useAppSelector((state) => state.videoData.movie);
+  const currentTV = useAppSelector((state) => state.videoData.tv);
+  const currentMovieVideoKey = useAppSelector(
+    (state) => state.videoData.movieKey
+  );
+  const currentTVVideoKey = useAppSelector((state) => state.videoData.tvKey);
+  const content = contentType === "movie" ? currentMovie : currentTV;
+  const videoKey =
+    contentType === "movie" ? currentMovieVideoKey : currentTVVideoKey;
+
+  const handleWatchLater = () => {
+    // if (existInWatchLater) {
+    //   handleRemoveFromWatchLater(
+    //     currentContentMode,
+    //     contentDetail?.id as number
+    //   );
+    // } else {
+    //   handleAddToWatchLater({
+    //     contentType: currentContentMode,
+    //     contentDetails: contentDetail as Record<string, unknown>,
+    //   });
+
+    handleAddToWatchLater({
+      contentType: currentContentMode,
+      contentDetails: content as Record<string, unknown>,
+    });
+  };
 
   const fetchContent = async () => {
     const response = await fetch(
@@ -77,11 +109,22 @@ export default function VideoContainer({
   };
 
   useEffect(() => {
+    if (contentType === "movie" && currentMovieVideoKey) {
+      return;
+    }
+    if (contentType === "tv" && currentTVVideoKey) {
+      return;
+    }
     const getVideo = async () => {
       try {
         setIsLoading(true);
         const contentDetails = await fetchContent();
-        setContentDetail(contentDetails);
+        if (contentType === "movie") {
+          handleSetMovieVideo(contentDetails);
+        } else {
+          handleSetTVVideo(contentDetails);
+        }
+
         const videoDetails = await fetchVideoDetails(contentDetails.id);
         if (!videoDetails?.key) {
           const video = (
@@ -95,7 +138,7 @@ export default function VideoContainer({
             )
           ];
 
-          setContentDetail({
+          const contentDetails = {
             id: video.id,
             poster_path: video.poster_path,
             backdrop_path: null,
@@ -106,10 +149,21 @@ export default function VideoContainer({
             original_title: video.title,
             name: video.name,
             original_name: video.name,
-          });
-          setVideoId(video.key);
+          };
+
+          if (contentType === "movie") {
+            handleSetMovieVideo(contentDetails);
+            handleSetMovieKey(video.key);
+          } else {
+            handleSetTVVideo(contentDetails);
+            handleSetTVKey(video.key);
+          }
         } else {
-          setVideoId(videoDetails.key);
+          if (contentType === "movie") {
+            handleSetMovieKey(videoDetails.key);
+          } else {
+            handleSetTVKey(videoDetails.key);
+          }
         }
       } catch (error) {
         console.error("Error while fetching video!", error);
@@ -124,7 +178,7 @@ export default function VideoContainer({
           )
         ];
 
-        setContentDetail({
+        const contentDetails = {
           id: video.id,
           poster_path: video.poster_path,
           backdrop_path: null,
@@ -135,8 +189,15 @@ export default function VideoContainer({
           original_title: video.title,
           name: video.name,
           original_name: video.name,
-        });
-        setVideoId(video.key);
+        };
+
+        if (contentType === "movie") {
+          handleSetMovieVideo(contentDetails);
+          handleSetMovieKey(video.key);
+        } else {
+          handleSetTVVideo(contentDetails);
+          handleSetTVKey(video.key);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -144,7 +205,7 @@ export default function VideoContainer({
     getVideo();
   }, [contentType]);
 
-  if (isLoading || !videoId) {
+  if (isLoading || !videoKey) {
     return (
       <div className="relative w-full aspect-video overflow-hidden bg-black">
         <Skeleton className="absolute inset-0 w-full h-full" />
@@ -156,7 +217,7 @@ export default function VideoContainer({
     <div className="relative w-full aspect-video overflow-hidden bg-black select-none">
       <iframe
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0&disablekb=1&fs=0&playsinline=1&start=0&end=54&vq=hd1080`}
+        src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoKey}&modestbranding=1&rel=0&disablekb=1&fs=0&playsinline=1&start=0&end=54&vq=hd1080`}
         allow="autoplay; encrypted-media"
         referrerPolicy="strict-origin-when-cross-origin"
       ></iframe>
@@ -174,10 +235,10 @@ export default function VideoContainer({
       >
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold text-4xl text-white text-shadow-lg">
-            {contentDetail?.original_name || contentDetail?.original_title}
+            {(content?.original_name || content?.original_title) as string}
           </h2>
           <p className="text-xl text-white/80 text-shadow-lg line-clamp-3">
-            {contentDetail?.overview || "the"}
+            {(content?.overview as string) || "the"}
           </p>
         </div>
 
@@ -193,12 +254,7 @@ export default function VideoContainer({
             Play now
           </button>
           <button
-            onClick={() =>
-              handleAddToWatchLater({
-                contentType: currentContentMode,
-                contentDetails: contentDetail as Record<string, unknown>,
-              })
-            }
+            onClick={handleWatchLater}
             className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5"
           >
             watch later

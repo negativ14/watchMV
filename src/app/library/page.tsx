@@ -17,8 +17,8 @@ export default function Page() {
             Your Library
           </h1>
 
-          <LibraryBig className="absolute size-32 text-white opacity-20 left-96 bottom-0 -rotate-45" />
-          <LibraryBig className="absolute size-32 text-white opacity-20 right-96 -top-2 -rotate-45" />
+          <LibraryBig className="absolute size-32 text-white opacity-20 -left-20 md:left-96 bottom-0 -rotate-45" />
+          <LibraryBig className="absolute size-32 text-white opacity-20 -right-10 md:right-96 -top-2 -rotate-45" />
         </div>
       </div>
 

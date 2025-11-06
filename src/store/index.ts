@@ -3,6 +3,7 @@ import userReducer from "./features/userSlice";
 import uiReducer from "./features/uiSlice";
 import libraryReducer from "./features/userLibrarySlice";
 import { localStorageMiddleware } from "./middleware/localStorageMiddleware";
+import videoReducer from "./features/videoSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,10 +11,10 @@ export const makeStore = () => {
       userData: userReducer,
       uiData: uiReducer,
       libraryData: libraryReducer,
+      videoData: videoReducer,
     },
-    middleware: (getDefaultMiddleware) => (
-      getDefaultMiddleware().concat(localStorageMiddleware)
-    ),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(localStorageMiddleware),
   });
 };
 
