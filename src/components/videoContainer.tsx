@@ -11,8 +11,11 @@ import { ContentMode } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import useWatchLater from "@/hooks/useWatchLater";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import useVideo from "@/hooks/useVideo";
+import { setContentMode } from "@/store/features/uiSlice";
+import useWatchHistory from "@/hooks/useWatchHistory";
+import { useRouter } from "next/navigation";
 
 export type TMDBContent = {
   id: number;
@@ -37,7 +40,7 @@ export default function VideoContainer({
   contentType: ContentMode;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { handleAddToWatchLater } = useWatchLater();
+  const { handleAddToWatchLater, handleRemoveFromWatchLater } = useWatchLater();
   const currentContentMode = useAppSelector(
     (state) => state.uiData.contentMode
   );
@@ -56,23 +59,44 @@ export default function VideoContainer({
   const content = contentType === "movie" ? currentMovie : currentTV;
   const videoKey =
     contentType === "movie" ? currentMovieVideoKey : currentTVVideoKey;
+  const watchLaterMovies = useAppSelector(
+    (state) => state.libraryData.watchLater.movies
+  );
+  const watchLaterTV = useAppSelector(
+    (state) => state.libraryData.watchLater.tv
+  );
+  const currentWatchLater =
+    contentType === "movie" ? watchLaterMovies : watchLaterTV;
+
+  const existInWatchLater = currentWatchLater.some(
+    (item) => item.id === content.id
+  );
+
+  const dispatch = useAppDispatch();
+  const { handleAddToWatchHistory } = useWatchHistory();
+  const { push } = useRouter();
 
   const handleWatchLater = () => {
-    // if (existInWatchLater) {
-    //   handleRemoveFromWatchLater(
-    //     currentContentMode,
-    //     contentDetail?.id as number
-    //   );
-    // } else {
-    //   handleAddToWatchLater({
-    //     contentType: currentContentMode,
-    //     contentDetails: contentDetail as Record<string, unknown>,
-    //   });
+    if (existInWatchLater) {
+      handleRemoveFromWatchLater(contentType, content.id as number);
+    } else {
+      handleAddToWatchLater({
+        contentType: currentContentMode,
+        contentDetails: content as Record<string, unknown>,
+      });
+    }
+  };
 
-    handleAddToWatchLater({
-      contentType: currentContentMode,
-      contentDetails: content as Record<string, unknown>,
-    });
+  const handlePlayClick = () => {
+    if (contentType === "movie") {
+      dispatch(setContentMode("movie"));
+      handleAddToWatchHistory({ contentType, contentDetails: content });
+      push(`/movie-details/${content.id}`);
+    } else {
+      dispatch(setContentMode("tv"));
+      handleAddToWatchHistory({ contentType, contentDetails: content });
+      push(`/tv-series-details/${content.id}`);
+    }
   };
 
   const fetchContent = async () => {
@@ -228,14 +252,14 @@ export default function VideoContainer({
         animate={{ y: 0, opacity: 1 }}
         transition={{
           duration: 0.6,
-          ease: [0.4, 0, 0.2, 1],
-          delay: 0.2,
+          ease: "easeInOut",
+          delay: 0.8,
         }}
         className="absolute max-w-lg bottom-25 left-5 hidden md:flex flex-col gap-6"
       >
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold text-4xl text-white text-shadow-lg">
-            {(content?.original_name || content?.original_title) as string}
+            {(content?.name || content?.title) as string}
           </h2>
           <p className="text-xl text-white/80 text-shadow-lg line-clamp-3">
             {(content?.overview as string) || "the"}
@@ -244,6 +268,7 @@ export default function VideoContainer({
 
         <div className="flex items-center gap-4">
           <button
+            onClick={handlePlayClick}
             className={cn(
               "text-white text-xl rounded-md font-medium hover:opacity-90 cursor-pointer px-4 py-1.5",
               contentType === "movie"
@@ -257,7 +282,7 @@ export default function VideoContainer({
             onClick={handleWatchLater}
             className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5"
           >
-            watch later
+            {existInWatchLater ? "Remove" : "Watch later"}
           </button>
         </div>
       </motion.div>

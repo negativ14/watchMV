@@ -87,7 +87,10 @@ export default function LibraryCards({
         {(cardCategory === "favorite" || cardCategory === "watchLater") && (
           <div className="h-10 border-b flex items-center">
             <h2 className="font-medium text-xl tracking-tight px-4 mx-auto">
-              Movies<span className="text-sm ml-2 text-muted-foreground">({firstList.length})</span>
+              Movies
+              <span className="text-sm ml-2 text-muted-foreground">
+                ({firstList.length})
+              </span>
             </h2>
           </div>
         )}
@@ -98,20 +101,21 @@ export default function LibraryCards({
                 key={(item.id as number) ?? index}
                 className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
               >
-                <div className="relative flex flex-col items-center px-4 py-6">
-                  <Image
-                    width={128}
-                    height={192}
-                    src={`${BaseImageUrl}${item.poster_path as string}`}
-                    alt="poster image"
-                    priority
-                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                  />
+                <div className="flex flex-col h-[280px] w-full justify-between">
+                  <div className="relative flex flex-1 items-center justify-center px-4 py-6">
+                    <Image
+                      width={128}
+                      height={192}
+                      src={`${BaseImageUrl}${item.poster_path as string}`}
+                      alt="poster image"
+                      priority
+                      className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                    />
+                  </div>
+                  <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
+                    {(item.title as string) || (item.name as string)}
+                  </p>
                 </div>
-                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-                  {(item.original_title as string) ||
-                    (item.original_name as string)}
-                </p>
 
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -155,7 +159,10 @@ export default function LibraryCards({
         {(cardCategory === "favorite" || cardCategory === "watchLater") && (
           <div className="h-10 border-b flex items-center">
             <h2 className="font-medium text-xl tracking-tight px-4 mx-auto">
-              TV Series <span className="text-sm ml-1 text-muted-foreground">({secondList.length})</span>
+              TV Series{" "}
+              <span className="text-sm ml-1 text-muted-foreground">
+                ({secondList.length})
+              </span>
             </h2>
           </div>
         )}
@@ -166,20 +173,21 @@ export default function LibraryCards({
                 key={item.id as number}
                 className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
               >
-                <div className="relative flex flex-col items-center px-4 py-6">
-                  <Image
-                    width={128}
-                    height={192}
-                    src={`${BaseImageUrl}${item.poster_path as string}`}
-                    alt="poster image"
-                    priority
-                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                  />
+                <div className="flex flex-col h-[280px] w-full justify-between">
+                  <div className="relative flex flex-1 items-center justify-center px-4 py-6">
+                    <Image
+                      width={128}
+                      height={192}
+                      src={`${BaseImageUrl}${item.poster_path as string}`}
+                      alt="poster image"
+                      priority
+                      className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                    />
+                  </div>
+                  <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground relative">
+                    {(item.title as string) || (item.name as string)}
+                  </p>
                 </div>
-                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground relative">
-                  {(item.original_title as string) ||
-                    (item.original_name as string)}
-                </p>
 
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -226,22 +234,25 @@ export default function LibraryCards({
                 key={item.contentDetails.id as number}
                 className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
               >
-                <div className="relative flex flex-col items-center px-4 py-6">
-                  <Image
-                    width={128}
-                    height={192}
-                    src={`${BaseImageUrl}${
-                      item.contentDetails.poster_path as string
-                    }`}
-                    alt="poster image"
-                    priority
-                    className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-                  />
+                <div className="flex flex-col h-[280px] w-full justify-between">
+                  <div className="flex-1 flex items-center justify-center px-4 py-6">
+                    <Image
+                      width={128}
+                      height={192}
+                      src={`${BaseImageUrl}${
+                        item.contentDetails.poster_path as string
+                      }`}
+                      alt="poster image"
+                      priority
+                      className="object-cover rounded-lg max-h-[192px] group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                    />
+                  </div>
+
+                  <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
+                    {(item.contentDetails.title as string) ||
+                      (item.contentDetails.name as string)}
+                  </p>
                 </div>
-                <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-                  {(item.contentDetails.original_title as string) ||
-                    (item.contentDetails.original_name as string)}
-                </p>
 
                 <Tooltip>
                   <TooltipTrigger asChild>

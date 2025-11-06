@@ -37,19 +37,21 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
           onClick={() => handleCard(item.id as number, item)}
           className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
         >
-          <div className="relative flex flex-col items-center px-4 py-6">
-            <Image
-              width={128}
-              height={192}
-              src={`${BaseImageUrl}${item.poster_path as string}`}
-              alt="poster image"
-              priority
-              className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
-            />
+          <div className="flex flex-col justify-between h-[280px] w-full">
+            <div className="relative flex items-center justify-center px-4 py-6 flex-1">
+              <Image
+                width={128}
+                height={192}
+                src={`${BaseImageUrl}${item.poster_path as string}`}
+                alt="poster image"
+                priority
+                className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+              />
+            </div>
+            <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
+              {(item.title || item.name) as string}
+            </p>
           </div>
-          <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
-            {(item.original_title || item.original_name) as string}
-          </p>
         </div>
       ))}
     </div>
