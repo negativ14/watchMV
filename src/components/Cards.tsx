@@ -31,7 +31,7 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
 
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">
-      {list.map((item) => (
+      {list?.map((item) => (
         <div
           key={item.id as number}
           onClick={() => handleCard(item.id as number, item)}

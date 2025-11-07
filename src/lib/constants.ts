@@ -6,7 +6,7 @@ interface ILanguages {
 }
 
 export const BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
-export const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+export const API_KEY = process.env.TMDB_API_KEY;
 export const BaseImageUrl = "https://image.tmdb.org/t/p/w500";
 
 export const langugaes: ILanguages[] = [

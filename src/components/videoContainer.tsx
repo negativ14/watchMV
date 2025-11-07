@@ -227,7 +227,8 @@ export default function VideoContainer({
       }
     };
     getVideo();
-  }, [contentType]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoading || !videoKey) {
     return (

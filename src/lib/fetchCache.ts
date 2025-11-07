@@ -1,16 +1,17 @@
 import { options } from "@/lib/constants";
 
-export default async function fetchTMDB(url: string) {
+export default async function fetchCache(url: string) {
   try {
     const response = await fetch(url, {
       ...options,
       next: { revalidate: 43200 },
     });
     if (!response.ok) {
-      throw new Error("Failed to fetch data!");
+      console.error(`Failed: ${response.status} - ${url}`);
+      return [];
     }
     const data = await response.json();
-    return data.results;
+    return data;
   } catch (error) {
     console.log("Error while fetching", error);
     return [];

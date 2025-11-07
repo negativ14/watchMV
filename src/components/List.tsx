@@ -1,5 +1,5 @@
-import fetchTMDB from "@/hooks/useFetch";
 import Cards from "./Cards";
+import fetchCache from "@/lib/fetchCache";
 
 export default async function List({
   title,
@@ -8,7 +8,8 @@ export default async function List({
   title: string;
   url: string;
 }) {
-  const list = await fetchTMDB(url);
+  const data = await fetchCache(url);
+  const list = data.results;
 
   return (
     <div className="w-full">
