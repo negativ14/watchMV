@@ -7,7 +7,8 @@ interface ILanguages {
 
 export const BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 export const API_KEY = process.env.TMDB_API_KEY;
-export const BaseImageUrl = "https://image.tmdb.org/t/p/w500";
+export const Image_BASE_URL = "https://image.tmdb.org/t/p/w500";
+export const Provider_Base_URL = "https://image.tmdb.org/t/p/w185";
 
 export const langugaes: ILanguages[] = [
   { id: "en", langugae: "English" },
@@ -38,7 +39,7 @@ export const endpoints = {
 export const FALLBACK_TRAILERS = [
   {
     id: 27205,
-    key: "tgbNymZ7vqY",
+    key: "hstBN0Qkqhc",
     title: "Inception",
     name: "Inception",
     overview:
@@ -47,7 +48,7 @@ export const FALLBACK_TRAILERS = [
   },
   {
     id: 157336,
-    key: "YoHD9XEInc0",
+    key: "zSWdZVtXT7E",
     title: "Interstellar",
     name: "Interstellar",
     overview:
@@ -65,7 +66,7 @@ export const FALLBACK_TRAILERS = [
   },
   {
     id: 155,
-    key: "EXeTwQWrcwY",
+    key: "abER52pzkG0",
     title: "The Dark Knight",
     name: "The Dark Knight",
     overview:
@@ -86,7 +87,7 @@ export const FALLBACK_TRAILERS = [
 export const FALLBACK_TV_TRAILERS = [
   {
     id: 1399,
-    key: "HhesaQXLuRY",
+    key: "1JLUn2DFW4w",
     title: "Breaking Bad",
     name: "Breaking Bad",
     overview:

@@ -1,6 +1,6 @@
 "use client";
 import useWatchHistory from "@/hooks/useWatchHistory";
-import { BaseImageUrl } from "@/lib/constants";
+import { Image_BASE_URL } from "@/lib/constants";
 import { setContentMode } from "@/store/features/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
@@ -42,7 +42,7 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
               <Image
                 width={128}
                 height={192}
-                src={`${BaseImageUrl}${item.poster_path as string}`}
+                src={`${Image_BASE_URL}${item.poster_path as string}`}
                 alt="poster image"
                 priority
                 className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"

@@ -2,7 +2,7 @@
 import useFavorite from "@/hooks/useFavorite";
 import useWatchHistory from "@/hooks/useWatchHistory";
 import useWatchLater from "@/hooks/useWatchLater";
-import { BaseImageUrl } from "@/lib/constants";
+import { Image_BASE_URL } from "@/lib/constants";
 import { useAppSelector } from "@/store/hooks";
 import { CardCategory } from "@/types/types";
 import { Trash2 } from "lucide-react";
@@ -106,7 +106,7 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${BaseImageUrl}${item.poster_path as string}`}
+                      src={`${Image_BASE_URL}${item.poster_path as string}`}
                       alt="poster image"
                       priority
                       className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
@@ -178,7 +178,7 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${BaseImageUrl}${item.poster_path as string}`}
+                      src={`${Image_BASE_URL}${item.poster_path as string}`}
                       alt="poster image"
                       priority
                       className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
@@ -239,7 +239,7 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${BaseImageUrl}${
+                      src={`${Image_BASE_URL}${
                         item.contentDetails.poster_path as string
                       }`}
                       alt="poster image"

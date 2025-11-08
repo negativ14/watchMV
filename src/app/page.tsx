@@ -12,7 +12,7 @@ export default function Home() {
       </div>
 
       <div className="border-px border-b border-foreground/30 relative">
-        <div className="relative h-10 border-y border-foreground/30">
+        <div className="relative h-10 border-y border-foreground/30 ">
           <div className="max-w-[1360px] mx-auto border-x border-foreground/30 h-full bg-background relative z-10">
             <div className="max-w-7xl mx-auto border-x h-full"></div>
           </div>
@@ -20,16 +20,16 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl h-full border-x-px mx-auto relative">
-          <div className="h-full w-full">
+          <div className="h-full w-full overflow-hidden">
             <VideoContainer contentType="movie" />
           </div>
           <Navbar />
 
           {/* Decorative side stripes */}
-          <div className="absolute h-full w-10 -left-10 top-0 border bg-background">
+          <div className="absolute h-full w-10 -left-10 top-0 border bg-background hidden xl:block">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
-          <div className="absolute h-full w-10 -right-10 top-0 border bg-background">
+          <div className="absolute h-full w-10 -right-10 top-0 border bg-background hidden xl:block">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
         </div>

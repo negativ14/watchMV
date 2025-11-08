@@ -69,7 +69,7 @@ export default function VideoContainer({
     contentType === "movie" ? watchLaterMovies : watchLaterTV;
 
   const existInWatchLater = currentWatchLater.some(
-    (item) => item.id === content.id
+    (item) => item.id === content?.id
   );
 
   const dispatch = useAppDispatch();
@@ -105,8 +105,8 @@ export default function VideoContainer({
       options
     );
     const data = await response.json();
-    const results = data.results || [];
-    const randomItem = results[Math.floor(Math.random() * results.length)];
+    const results = data?.results || [];
+    const randomItem = results[Math.floor(Math.random() * results?.length)];
     return randomItem;
   };
 
@@ -116,18 +116,18 @@ export default function VideoContainer({
       options
     );
     const data = await response.json();
-    const results = data.results || [];
-    const filteredTrailer = results.filter(
+    const results = data?.results || [];
+    const filteredTrailer = results?.filter(
       (item: { type: string }) => item.type === "Trailer"
     );
-    const filteredTeaser = results.filter(
+    const filteredTeaser = results?.filter(
       (item: { type: string }) => item.type === "Teaser"
     );
 
     const randomTrailer =
-      filteredTrailer[Math.floor(Math.random() * filteredTrailer.length)];
+      filteredTrailer[Math.floor(Math.random() * filteredTrailer?.length)];
     const randomTeaser =
-      filteredTeaser[Math.floor(Math.random() * filteredTeaser.length)];
+      filteredTeaser[Math.floor(Math.random() * filteredTeaser?.length)];
 
     return randomTrailer ?? randomTeaser ?? results[0] ?? null;
   };
@@ -149,7 +149,7 @@ export default function VideoContainer({
           handleSetTVVideo(contentDetails);
         }
 
-        const videoDetails = await fetchVideoDetails(contentDetails.id);
+        const videoDetails = await fetchVideoDetails(contentDetails?.id);
         if (!videoDetails?.key) {
           const video = (
             contentType === "tv" ? FALLBACK_TV_TRAILERS : FALLBACK_TRAILERS
@@ -184,9 +184,9 @@ export default function VideoContainer({
           }
         } else {
           if (contentType === "movie") {
-            handleSetMovieKey(videoDetails.key);
+            handleSetMovieKey(videoDetails?.key);
           } else {
-            handleSetTVKey(videoDetails.key);
+            handleSetTVKey(videoDetails?.key);
           }
         }
       } catch (error) {
@@ -227,7 +227,7 @@ export default function VideoContainer({
       }
     };
     getVideo();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading || !videoKey) {

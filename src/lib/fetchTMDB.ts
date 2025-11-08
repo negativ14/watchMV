@@ -7,13 +7,22 @@ export default async function fetchTMDB(url: string) {
       next: { revalidate: 43200 },
     });
     if (!response.ok) {
-      console.error(`Failed: ${response.status} - ${url}`);
-      return [];
+      return { error: true, status: response.status, data: null };
     }
     const data = await response.json();
-    return data;
+    if (
+      !data ||
+      (Array.isArray(data.results) && data.results.length === 0) ||
+      Object.keys(data).length === 0
+    ) {
+      console.warn(`⚠️ Empty data received from: ${url}`);
+      return { error: false, empty: true, data: null };
+    }
+
+    console.log(`✅ Success [${response.status}] for: ${url}`);
+    return { error: false, empty: false, data };
   } catch (error) {
     console.log("Error while fetching", error);
-    return [];
+    return { error: true, status: "network-failed", data: null };
   }
 }

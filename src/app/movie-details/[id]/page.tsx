@@ -1,7 +1,6 @@
 import ContentCast from "@/components/detail-page/ContentCast";
 import ContentDetails from "@/components/detail-page/ContentDetails";
 import ContentProvider from "@/components/detail-page/ContentProvider";
-import ContentReviews from "@/components/detail-page/ContentReviews";
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -19,7 +18,7 @@ export default async function Page({
       </div>
 
       <HomeNav />
-      <div className="border-b">
+      <div className="border-b border-foreground/30 border-dashed">
         <div className="max-w-7xl mx-auto border">
           <VideoPlayer videoKey="7ogVp-d-CdE" />
         </div>
@@ -27,11 +26,10 @@ export default async function Page({
           <div className="max-w-7xl mx-auto border-x h-full"></div>
         </div>
       </div>
-      <ContentCast contentType="movie" id={id} />
+
       <ContentDetails contentType="movie" id={id} />
       <ContentProvider contentType="movie" id={id} />
-      {/* <ContentReviews contentType="movie" id={id} /> */}
-
+      <ContentCast contentType="movie" id={id} />
       <Footer />
     </div>
   );

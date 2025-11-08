@@ -1,7 +1,9 @@
 import fetchTMDB from "@/lib/fetchTMDB";
-import { BASE_URL } from "@/lib/constants";
+import { BASE_URL, Provider_Base_URL } from "@/lib/constants";
 import { ContentMode } from "@/types/types";
 import Image from "next/image";
+import { movieData } from "@/mock/movie";
+import { tvData } from "@/mock/tv";
 
 export default async function ContentProvider({
   contentType,
@@ -10,9 +12,10 @@ export default async function ContentProvider({
   contentType: ContentMode;
   id: number;
 }) {
-  const url = `${BASE_URL}/${contentType}/${id}/watch/providers`;
+  //   const url = `${BASE_URL}/${contentType}/${id}/watch/providers`;
+  const url = "https://api.themoviedb.org/3/movie/693134/watch/providers";
   const data = await fetchTMDB(url);
-  const providers = data?.results?.US;
+  const providers = data?.data?.results?.US;
   const buyProvider = providers?.buy || [];
   const rentProvider = providers?.rent || [];
   const flatrateProvider = providers?.flatrate || [];
@@ -25,29 +28,53 @@ export default async function ContentProvider({
     ...adsProvider,
     ...freeProvider,
   ];
-  const uniqueProviders = allProviders.filter(
+  let uniqueProviders = [];
+  uniqueProviders = allProviders.filter(
     (provider, index, self) =>
       index === self.findIndex((p) => p.provider_id === provider.provider_id)
   );
-  console.log("the data is", data);
+  console.log("the prviders is", data);
 
-  if (!data || !data?.results?.US) {
-    return <div>No providers available</div>;
+  if (!data?.error && Object.keys(data?.data?.results).length === 0) {
+    return (
+      <h2 className="max-w-7xl mx-auto border px-4 py-1 text-xl tracking-tight">
+        No providers available!!
+      </h2>
+    );
+  }
+
+  if (data.error) {
+    uniqueProviders =
+      contentType === "movie"
+        ? movieData.watchProviders
+        : tvData.watchProviders;
   }
   return (
-    <div>
-      {uniqueProviders?.map((item, index) => (
-        <p key={index}>
-          {item.provider_name}
-          <Image
-            src={`https://image.tmdb.org/t/p/w185/${item.logo_path}`}
-            alt="logo provider"
-            width={100}
-            height={100}
-            className="rounded-2xl"
-          />
-        </p>
-      ))}
+    <div className="border-b border-foreground/30 border-dashed">
+      <div className="max-w-7xl mx-auto border-x flex flex-col gap-4 py-5">
+        <h2 className=" px-4 py-1 text-xl tracking-tight">
+          Available Providers
+        </h2>
+        <div className="px-4 flex items-center flex-wrap gap-6">
+          {uniqueProviders?.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-2 overflow-hidden max-w-[100px]"
+            >
+              <Image
+                src={`${Provider_Base_URL}/${item.logo_path}`}
+                alt="logo provider"
+                width={80}
+                height={80}
+                className="rounded-2xl shadow-lg"
+              />
+              <p className="text-secondary-foreground text-start text-md whitespace-nowrap truncate overflow-hidden">
+                {item.provider_name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

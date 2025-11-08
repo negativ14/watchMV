@@ -12,8 +12,8 @@ export default async function ContentReviews({
 }) {
   const url = `${BASE_URL}/${contentType}/${id}/reviews?language=en-US&page=1`;
   const data = await fetchTMDB(url);
-  console.log("teh urla nd dat", url,data)
-  const reviews = data.results;
+  console.log("the reviews are",data)
+  const reviews = data?.data?.results;
 
   return (
     <div>

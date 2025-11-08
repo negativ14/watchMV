@@ -36,7 +36,7 @@ export default function Menubar() {
   }, [isMenuOpen]);
 
   return (
-    <div className="relative z-10" ref={dropdownRef}>
+    <div className="relative z-50" ref={dropdownRef}>
       <MenuIcon
         className="size-5 text-white"
         onClick={() => {
@@ -52,7 +52,7 @@ export default function Menubar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="absolute top-7 right-1 bg-background flex flex-col rounded-md rounded-tr-none hover:text-foreground px-3 py-2 cursor-pointer border"
+            className="absolute top-7 right-1 bg-background flex flex-col rounded-md rounded-tr-none hover:text-foreground px-3 py-2 cursor-pointer border z-50"
           >
             {mobileOptions.map((item) => (
               <li
