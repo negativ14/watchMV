@@ -4,7 +4,6 @@ import { IReview } from "./ContentReviews";
 import { Image_BASE_URL } from "@/lib/constants";
 import avatar from "@/assets/images/fallback_avatar.png";
 import { useState } from "react";
-import { motion } from "motion/react";
 
 export default function Reviews({ reviews }: { reviews: IReview[] }) {
   return (
