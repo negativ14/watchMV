@@ -9,7 +9,7 @@ export default async function List({
   url: string;
 }) {
   const data = await fetchCache(url);
-  const list = data.results;
+  const list = data?.results;
 
   return (
     <div className="w-full">

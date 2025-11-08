@@ -33,13 +33,17 @@ export default async function ContentProvider({
     (provider, index, self) =>
       index === self.findIndex((p) => p.provider_id === provider.provider_id)
   );
-  console.log("the prviders is", data);
 
   if (!data?.error && Object.keys(data?.data?.results).length === 0) {
     return (
-      <h2 className="max-w-7xl mx-auto border px-4 py-1 text-xl tracking-tight">
-        No providers available!!
-      </h2>
+      <div className="border-b border-dashed border-foreground/30">
+        <div className="max-w-7xl mx-auto border-x">
+          <h1 className=" font-semibold tracking-tight px-4 py-1 text-2xl">
+            No Providers Available!
+          </h1>
+          <div className="h-10 border-t" />
+        </div>
+      </div>
     );
   }
 
@@ -51,10 +55,10 @@ export default async function ContentProvider({
   }
   return (
     <div className="border-b border-foreground/30 border-dashed">
+      <h2 className="max-w-7xl mx-auto px-4 py-1 border-x text-2xl font-semibold tracking-tight border-b">
+        Available Providers
+      </h2>
       <div className="max-w-7xl mx-auto border-x flex flex-col gap-4 py-5">
-        <h2 className=" px-4 py-1 text-xl tracking-tight">
-          Available Providers
-        </h2>
         <div className="px-4 flex items-center flex-wrap gap-6">
           {uniqueProviders?.map((item, index) => (
             <div
@@ -74,25 +78,9 @@ export default async function ContentProvider({
             </div>
           ))}
         </div>
+        <div className="h-5 border-t" />
       </div>
     </div>
   );
 }
 
-// {buyProvider.map((item: {logo_path: string,
-//           provider_id: number,
-//           provider_name:string,
-//           display_priority: number},index: number) => (<p key={index}>
-//         {item?.provider_name as string}
-//       </p>))}
-
-//https://api.themoviedb.org/3/tv/series_id/watch/providers
-
-// const country = 'IN'; // user’s country code
-// const providers = data.results[country];
-
-// if (providers) {
-//   console.log("Watch in", country, "on:");
-//   providers.flatrate?.forEach(p => console.log(p.provider_name));
-//   providers.buy?.forEach(p => console.log("Buy on:", p.provider_name));
-// }

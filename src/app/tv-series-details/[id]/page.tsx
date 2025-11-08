@@ -1,6 +1,8 @@
 import ContentCast from "@/components/detail-page/ContentCast";
 import ContentDetails from "@/components/detail-page/ContentDetails";
 import ContentProvider from "@/components/detail-page/ContentProvider";
+import ContentRecommendation from "@/components/detail-page/ContentRecommendation";
+import ContentReviews from "@/components/detail-page/ContentReviews";
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -30,6 +32,8 @@ export default async function Page({
       <ContentDetails contentType="tv" id={id} />
       <ContentProvider contentType="tv" id={id} />
       <ContentCast contentType="tv" id={id} />
+      <ContentReviews contentType="tv" id={id} />
+      <ContentRecommendation contentType="tv" id={id} />
       <Footer />
     </div>
   );

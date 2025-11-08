@@ -35,32 +35,37 @@ const librarySlice = createSlice({
         contentDetails: Record<string, unknown>;
       }>
     ) => {
-      if (action.payload.contentType === "movie") {
-        const existAlready = state.favorites.movies.some(
-          (item) => item.id === action.payload.contentDetails.id
+      const { contentType, contentDetails } = action.payload;
+
+      if (contentType === "movie") {
+        const alreadyExists = state.favorites.movies.some(
+          (item) => Number(item.id) === Number(contentDetails.id)
         );
-        if (!existAlready)
-          state.favorites.movies.unshift(action.payload.contentDetails);
+        if (!alreadyExists) {
+          state.favorites.movies = [contentDetails, ...state.favorites.movies];
+        }
       } else {
-        const existAlready = state.favorites.tv.some(
-          (item) => item.id === action.payload.contentDetails.id
+        const alreadyExists = state.favorites.tv.some(
+          (item) => Number(item.id) === Number(contentDetails.id)
         );
-        if (!existAlready)
-          state.favorites.tv.unshift(action.payload.contentDetails);
+        if (!alreadyExists) {
+          state.favorites.tv = [contentDetails, ...state.favorites.tv];
+        }
       }
     },
-    removeFromFavroite: (
+
+    removeFromFavorite: (
       state,
       action: PayloadAction<{ contentType: ContentMode; id: number }>
     ) => {
       if (action.payload.contentType === "movie") {
         const newFavoritesMovies = state.favorites.movies.filter(
-          (item) => item.id !== action.payload.id
+          (item) => Number(item.id) !== Number(action.payload.id)
         );
         state.favorites.movies = newFavoritesMovies;
       } else {
         const newFavoritesTV = state.favorites.tv.filter(
-          (item) => item.id !== action.payload.id
+          (item) => Number(item.id) !== Number(action.payload.id)
         );
         state.favorites.tv = newFavoritesTV;
       }
@@ -74,16 +79,22 @@ const librarySlice = createSlice({
     ) => {
       if (action.payload.contentType === "movie") {
         const existAlready = state.watchLater.movies.some(
-          (item) => item.id === action.payload.contentDetails.id
+          (item) => Number(item.id) === Number(action.payload.contentDetails.id)
         );
         if (!existAlready)
-          state.watchLater.movies.unshift(action.payload.contentDetails);
+          state.watchLater.movies = [
+            action.payload.contentDetails,
+            ...state.watchLater.movies,
+          ];
       } else {
         const existAlready = state.watchLater.tv.some(
-          (item) => item.id === action.payload.contentDetails.id
+          (item) => Number(item.id) === Number(action.payload.contentDetails.id)
         );
         if (!existAlready)
-          state.watchLater.tv.unshift(action.payload.contentDetails);
+          state.watchLater.tv = [
+            action.payload.contentDetails,
+            ...state.watchLater.tv,
+          ];
       }
     },
     removeFromWatchLater: (
@@ -92,12 +103,12 @@ const librarySlice = createSlice({
     ) => {
       if (action.payload.contentType === "movie") {
         const newWatchLater = state.watchLater.movies.filter(
-          (item) => item.id !== action.payload.id
+          (item) => Number(item.id) !== Number(action.payload.id)
         );
         state.watchLater.movies = newWatchLater;
       } else {
         const newWatchLaterTV = state.watchLater.tv.filter(
-          (item) => item.id !== action.payload.id
+          (item) => Number(item.id) !== Number(action.payload.id)
         );
         state.watchLater.tv = newWatchLaterTV;
       }
@@ -110,27 +121,31 @@ const librarySlice = createSlice({
       }>
     ) => {
       const existAlready = state.watchHistory.some(
-        (item) => item.contentDetails.id === action.payload.contentDetails.id
+        (item) =>
+          Number(item.contentDetails.id) ===
+          Number(action.payload.contentDetails.id)
       );
       if (existAlready) {
         const newFilteredHistory = state.watchHistory.filter(
-          (item) => item.contentDetails.id !== action.payload.contentDetails.id
+          (item) =>
+            Number(item.contentDetails.id) !==
+            Number(action.payload.contentDetails.id)
         );
         newFilteredHistory.unshift(action.payload);
         state.watchHistory = newFilteredHistory;
       } else {
-        state.watchHistory.unshift(action.payload);
+        state.watchHistory = [action.payload, ...state.watchHistory];
       }
     },
     removeFromWatchHistory: (state, action: PayloadAction<{ id: number }>) => {
       const newWatchHistory = state.watchHistory.filter(
-        (item) => item.contentDetails.id !== action.payload.id
+        (item) => Number(item.contentDetails.id) !== Number(action.payload.id)
       );
 
       state.watchHistory = newWatchHistory;
     },
     addToSearchHistory: (state, action: PayloadAction<string>) => {
-      state.searchHitory.unshift(action.payload);
+      state.searchHitory = [action.payload, ...state.searchHitory];
     },
     removeFromSearchHistory: (
       state,
@@ -188,7 +203,7 @@ export const {
   setWatchLater,
   setWatchHistory,
   setSearchHistory,
-  removeFromFavroite,
+  removeFromFavorite,
   removeFromSearchHistory,
   removeFromWatchHistory,
   removeFromWatchLater,

@@ -2,7 +2,7 @@
 
 import {
   addToFavorite,
-  removeFromFavroite,
+  removeFromFavorite,
 } from "@/store/features/userLibrarySlice";
 import { useAppDispatch } from "@/store/hooks";
 import { ContentMode } from "@/types/types";
@@ -20,7 +20,7 @@ export default function useFavorite() {
   };
 
   const handleRemoveFromFavorite = (contentType: ContentMode, id: number) => {
-    dispatch(removeFromFavroite({ contentType, id }));
+    dispatch(removeFromFavorite({ contentType, id }));
     toast.success("Removed from favroites.");
   };
 

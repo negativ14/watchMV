@@ -5,6 +5,11 @@ import { IContentDetails } from "./ContentDetails";
 import { Badge } from "../ui/badge";
 import BasicCards from "../BasicCards";
 import { ContentMode } from "@/types/types";
+import { useAppSelector } from "@/store/hooks";
+import PinkHeartIcon from "@/assets/svgs/PinkHeartIcon";
+import FilledBookMark from "@/assets/svgs/FilledBookMark";
+import useWatchLater from "@/hooks/useWatchLater";
+import useFavorite from "@/hooks/useFavorite";
 
 export default function Details({
   content,
@@ -15,6 +20,51 @@ export default function Details({
   contentType: ContentMode;
   id: number;
 }) {
+  const favoriteMovies = useAppSelector(
+    (state) => state.libraryData.favorites.movies
+  );
+  const favoriteTV = useAppSelector((state) => state.libraryData.favorites.tv);
+  const favoriteArray = contentType === "movie" ? favoriteMovies : favoriteTV;
+  const isFavorite = favoriteArray.some(
+    (item) => Number(item.id) === Number(id)
+  );
+
+  const watchLaterMovies = useAppSelector(
+    (state) => state.libraryData.watchLater.movies
+  );
+  const watchLaterTV = useAppSelector(
+    (state) => state.libraryData.watchLater.tv
+  );
+  const watchLaterArray =
+    contentType === "movie" ? watchLaterMovies : watchLaterTV;
+  const isInWatchLater = watchLaterArray.some(
+    (item) => Number(item.id) === Number(id)
+  );
+  const { handleAddToWatchLater, handleRemoveFromWatchLater } = useWatchLater();
+  const { handleAddToFavorite, handleRemoveFromFavorite } = useFavorite();
+
+  const handleWatchLater = () => {
+    if (isInWatchLater) {
+      handleRemoveFromWatchLater(contentType, id);
+    } else {
+      handleAddToWatchLater({
+        contentType,
+        contentDetails: content as unknown as Record<string, unknown>,
+      });
+    }
+  };
+
+  const handleFavorite = () => {
+    if (isFavorite) {
+      handleRemoveFromFavorite(contentType, id);
+    } else {
+      handleAddToFavorite(
+        contentType,
+        content as unknown as Record<string, unknown>
+      );
+    }
+  };
+
   return (
     <div className="relative flex flex-col gap-4">
       <div className="flex items-center justify-between divide-x px-4 py-1 border-b">
@@ -26,14 +76,26 @@ export default function Details({
         </h1>
         <div className="flex items-center gap-4 opacity-90">
           <Badge variant={"default"}>{content.status}</Badge>
-          <Heart className="size-6" />
-          <Bookmark className="size-6" />
+          <span className="cursor-pointer" onClick={handleFavorite}>
+            {isFavorite ? (
+              <PinkHeartIcon className="size-6" />
+            ) : (
+              <Heart className="size-6" />
+            )}
+          </span>
+          <span className="cursor-pointer" onClick={handleWatchLater}>
+            {isInWatchLater ? (
+              <FilledBookMark className="size-6" />
+            ) : (
+              <Bookmark className="size-6" />
+            )}
+          </span>
         </div>
       </div>
 
       <div className="px-4 py-1 flex flex-col gap-1">
         <h2 className="text-lg font-medium text-muted-foreground">Overview:</h2>
-        <p className="text-xl text-foreground tracking-tight">
+        <p className="text-lg text-foreground tracking-tighter">
           {content.overview}
         </p>
       </div>
