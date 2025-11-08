@@ -1,8 +1,11 @@
 import Footer from "@/components/Footer";
 import List from "@/components/List";
 import Navbar from "@/components/navbar";
+import ListSkeleton from "@/components/skeletons/listSkeleton";
+import VideoContainerSkeleton from "@/components/skeletons/videoContainerSkeleton";
 import VideoContainer from "@/components/videoContainer";
 import { endpoints } from "@/lib/constants";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -21,11 +24,12 @@ export default function Home() {
 
         <div className="max-w-7xl h-full border-x-px mx-auto relative">
           <div className="h-full w-full overflow-hidden">
-            <VideoContainer contentType="movie" />
+            <Suspense fallback={<VideoContainerSkeleton />}>
+              <VideoContainer contentType="movie" />
+            </Suspense>
           </div>
           <Navbar />
 
-          {/* Decorative side stripes */}
           <div className="absolute h-full w-10 -left-10 top-0 border bg-background hidden xl:block">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
           </div>
@@ -42,11 +46,21 @@ export default function Home() {
         <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
       </div>
 
-      <List url={endpoints.trendingMovies} title="Trending" />
-      <List url={endpoints.nowPlayingMovies} title="Now Playing" />
-      <List url={endpoints.popularMovies} title="Popular" />
-      <List url={endpoints.topRatedMovies} title="Top Rated" />
-      <List url={endpoints.upcomingMovies} title="Upcoming" />
+      <Suspense fallback={<ListSkeleton />}>
+        <List url={endpoints.trendingMovies} title="Trending" />
+      </Suspense>
+      <Suspense fallback={<ListSkeleton />}>
+        <List url={endpoints.nowPlayingMovies} title="Now Playing" />
+      </Suspense>
+      <Suspense fallback={<ListSkeleton />}>
+        <List url={endpoints.popularMovies} title="Popular" />
+      </Suspense>
+      <Suspense fallback={<ListSkeleton />}>
+        <List url={endpoints.topRatedMovies} title="Top Rated" />
+      </Suspense>
+      <Suspense fallback={<ListSkeleton />}>
+        <List url={endpoints.upcomingMovies} title="Upcoming" />
+      </Suspense>
       <Footer />
     </div>
   );

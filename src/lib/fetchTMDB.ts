@@ -19,7 +19,6 @@ export default async function fetchTMDB(url: string) {
       return { error: false, empty: true, data: null };
     }
 
-    console.log(`✅ Success [${response.status}] for: ${url}`);
     return { error: false, empty: false, data };
   } catch (error) {
     console.log("Error while fetching", error);

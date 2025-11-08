@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ContentCast from "@/components/detail-page/ContentCast";
 import ContentDetails from "@/components/detail-page/ContentDetails";
 import ContentProvider from "@/components/detail-page/ContentProvider";
@@ -6,6 +7,13 @@ import ContentReviews from "@/components/detail-page/ContentReviews";
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
 import VideoPlayer from "@/components/VideoPlayer";
+import { Suspense } from "react";
+import ContentDetailsSkeleton from "@/components/skeletons/contentDetailsSkeletons";
+import ContentProviderSkeleton from "@/components/skeletons/contentProvidersSkeleton";
+import ContentCastSkeleton from "@/components/skeletons/contentCastSkeleton";
+import ContentSimilarSkeleton from "@/components/skeletons/contentSimilarSkeleton";
+import ContentReviewsSkeleton from "@/components/skeletons/contentReviewsSkeletons";
+import VideoPlayerSkeleton from "@/components/skeletons/videoPlayerSkeleton";
 
 export default async function Page({
   params,
@@ -22,18 +30,30 @@ export default async function Page({
       <HomeNav />
       <div className="border-b border-foreground/30 border-dashed">
         <div className="max-w-7xl mx-auto border">
-          <VideoPlayer videoKey="7ogVp-d-CdE" />
+          <Suspense fallback={<VideoPlayerSkeleton />}>
+            <VideoPlayer videoKey="7ogVp-d-CdE" />
+          </Suspense>
         </div>
         <div className="border-t h-10">
           <div className="max-w-7xl mx-auto border-x h-full"></div>
         </div>
       </div>
 
-      <ContentDetails contentType="movie" id={id} />
-      <ContentProvider contentType="movie" id={id} />
-      <ContentCast contentType="movie" id={id} />
-      <ContentReviews contentType="movie" id={id} />
-      <ContentSimilar contentType="movie" id={id} />
+      <Suspense fallback={<ContentDetailsSkeleton />}>
+        <ContentDetails contentType="movie" id={id} />
+      </Suspense>
+      <Suspense fallback={<ContentProviderSkeleton />}>
+        <ContentProvider contentType="movie" id={id} />
+      </Suspense>
+      <Suspense fallback={<ContentCastSkeleton />}>
+        <ContentCast contentType="movie" id={id} />
+      </Suspense>
+      <Suspense fallback={<ContentReviewsSkeleton />}>
+        <ContentReviews contentType="movie" id={id} />
+      </Suspense>
+      <Suspense fallback={<ContentSimilarSkeleton />}>
+        <ContentSimilar contentType="movie" id={id} />
+      </Suspense>
       <Footer />
     </div>
   );

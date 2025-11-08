@@ -8,23 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setContentMode } from "@/store/features/uiSlice";
 import useWatchHistory from "@/hooks/useWatchHistory";
 import { useRouter } from "next/navigation";
-
-export type TMDBContent = {
-  id: number;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  overview: string;
-  popularity: number;
-  vote_average: number;
-
-  title?: string;
-  original_title?: string;
-  release_date?: string;
-
-  name?: string;
-  original_name?: string;
-  first_air_date?: string;
-};
+import { TMDBContent } from "./videoContainer";
 
 export default function VideoFrame({
   contentType,

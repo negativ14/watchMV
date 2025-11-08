@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import ThemeProvider from "@/providers/ThemeProvider";
 import StoreProvider from "./StoreProvider";
-
-const ibmPlexSans = IBM_Plex_Sans({
-  variable: "--font-ibm-plex-sans",
-  subsets: ["latin"],
-});
 
 const inter = Inter({
   variable: "--font-inter",

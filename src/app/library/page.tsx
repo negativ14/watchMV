@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
 import LibraryList from "@/components/LibraryList";
+import LibraryListSkeleton from "@/components/skeletons/libraryListSkeleton";
 import { LibraryBig } from "lucide-react";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -26,13 +28,20 @@ export default function Page() {
         <div className="h-15 max-w-7xl mx-auto border-x"></div>
       </div>
 
-      <LibraryList title="Favroites" cardCategory="favorite" />
+      <Suspense fallback={<LibraryListSkeleton />}>
+        <LibraryList title="Favroites" cardCategory="favorite" />
+      </Suspense>
       <div id="watchLater">
-        <LibraryList title="WatchLater" cardCategory="watchLater" />
+        <Suspense fallback={<LibraryListSkeleton />}>
+          {" "}
+          <LibraryList title="WatchLater" cardCategory="watchLater" />
+        </Suspense>
       </div>
 
       <div id="history">
-        <LibraryList title="WatchHistory" cardCategory="watchHistory" />
+        <Suspense fallback={<LibraryListSkeleton />}>
+          <LibraryList title="WatchHistory" cardCategory="watchHistory" />
+        </Suspense>
       </div>
 
       <Footer />
