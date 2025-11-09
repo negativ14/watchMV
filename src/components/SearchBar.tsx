@@ -4,16 +4,33 @@ import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store/hooks";
+import { toast } from "sonner";
 
 export default function SearchBar({ initialQuery }: { initialQuery: string }) {
   const [query, setQuery] = useState<string>(initialQuery);
   const [aiMode, setAIMode] = useState<boolean>(false);
   const { push } = useRouter();
+  const adult = useAppSelector((state) => state.userData.kidMode);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      push(`/search?query=${encodeURIComponent(query.trim())}`);
+      push(
+        `/search?query=${encodeURIComponent(
+          query.trim()
+        )}&adult=${adult}&aiMode=${aiMode}`
+      );
+    }
+  };
+
+  const hanldeAIMode = () => {
+    if (aiMode) {
+      setAIMode(false);
+      toast.success("AI Mode turned off!");
+    } else {
+      setAIMode(true);
+      toast.success("AI Mode turned on.");
     }
   };
   return (
@@ -35,17 +52,23 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
           </Button>
         </form>
 
-        <div className="relative overflow-hidden bg-white p-px rounded-lg flex-shrink-0 z-10">
-          <div className="absolute h-full w-full [background-image:conic-gradient(at_center,transparent,var(--color-blue-500)_20%,transparent_30)] animate-spin" />
+        <div className="relative overflow-hidden bg-white p-[2px] rounded-lg flex-shrink-0 z-10">
+          <div className="absolute inset-0 flex items-center justify-center">
+            {!aiMode && (
+              <div className="h-[150%] w-[150%] rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(79,70,229,0.8)_25%,transparent_50%,rgba(147,51,234,0.8)_75%,transparent)] animate-spin" />
+            )}
+          </div>
+
           <button
-            onClick={() => setAIMode(!aiMode)}
+            onClick={hanldeAIMode}
             className={cn(
-              "text-sm px-4 bg-secondary text-violet-100 rounded-md whitespace-nowrap cursor-pointer hover:opacity-90 w-full md:w-fit py-2.5",
-              aiMode && "bg-gradient-to-br from-indigo-500 to-violet-600",
-              "transition-all duration-300 ease-in-out"
+              "relative z-10 text-sm px-4 py-2.5 rounded-md whitespace-nowrap cursor-pointer transition-all duration-300 ease-in-out w-full md:w-fit text-violet-100",
+              aiMode
+                ? "bg-gradient-to-br from-indigo-500 to-violet-600"
+                : "bg-secondary hover:opacity-90"
             )}
           >
-            {aiMode ? "AI Mode On" : "Use AI Mode"}
+            {aiMode ? "AI Mode On" : "Turn On AI Mode"}
           </button>
         </div>
       </div>

@@ -70,6 +70,8 @@ export default function Page() {
           src={coverImage}
           alt="cover-image"
           fill
+          loading="lazy"
+          priority={false}
           className="object-cover pointer-events-none"
           sizes="w-auto h-full"
         />
@@ -94,6 +96,8 @@ export default function Page() {
             <div className="relative z-0 grid md:grid-cols-2 h-full w-full px-0.5">
               <div className="h-full w-full relative hidden md:block">
                 <Image
+                  loading="lazy"
+                  priority={false}
                   src={deadpool}
                   alt="deadpool login img"
                   className="h-full w-auto object-cover"
@@ -103,6 +107,8 @@ export default function Page() {
               <div className="bg-white h-full w-full relative flex justify-center items-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-movie-primary to-tv-primary opacity-80" />
                 <Image
+                  loading="lazy"
+                  priority={false}
                   src={cloud}
                   alt="clouds"
                   className="absolute object-cover -top-10 mask-b-from-0%"

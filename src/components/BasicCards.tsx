@@ -27,6 +27,8 @@ export default function BasicCards({
               <Image
                 width={128}
                 height={192}
+                loading="lazy"
+                priority={false}
                 src={
                   cardType === "poster"
                     ? `${Image_BASE_URL}${item.poster_path as string}`
@@ -35,7 +37,6 @@ export default function BasicCards({
                     : avatar
                 }
                 alt="poster image"
-                priority
                 className={`object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl ${
                   cardType === "cast" && "rounded-full w-[120px] h-[170px]"
                 }`}

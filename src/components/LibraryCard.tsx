@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
+import { cn } from "@/lib/utils";
 
 export interface TMDBItem {
   id: number;
@@ -99,7 +100,10 @@ export default function LibraryCards({
             firstList.map((item, index) => (
               <div
                 key={(item.id as number) ?? index}
-                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+                className={cn(
+                  "relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer",
+                  index === watchHistory?.length - 1 && "border-b"
+                )}
               >
                 <div className="flex flex-col h-[280px] w-full justify-between">
                   <div className="relative flex flex-1 items-center justify-center px-4 py-6">
@@ -108,7 +112,8 @@ export default function LibraryCards({
                       height={192}
                       src={`${Image_BASE_URL}${item.poster_path as string}`}
                       alt="poster image"
-                      priority
+                      loading="lazy"
+                      priority={false}
                       className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>
@@ -168,10 +173,13 @@ export default function LibraryCards({
         )}
         <div className="relative w-full flex transition-all duration-300 divide-x overflow-x-scroll scroll-hide">
           {secondList.length > 0 ? (
-            secondList.map((item) => (
+            secondList.map((item, index) => (
               <div
                 key={item.id as number}
-                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+                className={cn(
+                  "relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer",
+                  index === watchHistory?.length - 1 && "border-b"
+                )}
               >
                 <div className="flex flex-col h-[280px] w-full justify-between">
                   <div className="relative flex flex-1 items-center justify-center px-4 py-6">
@@ -180,7 +188,8 @@ export default function LibraryCards({
                       height={192}
                       src={`${Image_BASE_URL}${item.poster_path as string}`}
                       alt="poster image"
-                      priority
+                      loading="lazy"
+                      priority={false}
                       className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>
@@ -229,10 +238,13 @@ export default function LibraryCards({
 
       <div className="relative w-full flex transition-all duration-300 divide-x overflow-x-scroll scroll-hide">
         {cardCategory === "watchHistory" && watchHistory?.length > 0
-          ? watchHistory?.map((item) => (
+          ? watchHistory?.map((item, index) => (
               <div
                 key={item.contentDetails.id as number}
-                className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+                className={cn(
+                  "relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer",
+                  index === watchHistory?.length - 1 && "border-b"
+                )}
               >
                 <div className="flex flex-col h-[280px] w-full justify-between">
                   <div className="flex-1 flex items-center justify-center px-4 py-6">
@@ -243,7 +255,8 @@ export default function LibraryCards({
                         item.contentDetails.poster_path as string
                       }`}
                       alt="poster image"
-                      priority
+                      loading="lazy"
+                      priority={false}
                       className="object-cover rounded-lg max-h-[192px] group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>

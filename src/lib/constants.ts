@@ -131,3 +131,25 @@ export const FALLBACK_TV_TRAILERS = [
     poster_path: "/zrPpUlehQaBf8YX2NrVrKK8IEpf.jpg",
   },
 ];
+
+export const buildPrompt = (query: string) => `
+You are a movie recommendation expert with access to The Movie Database (TMDB).
+
+User Query: "${query}"
+
+Based on the user's query, recommend relevant movies and TV series from TMDB.
+
+CRITICAL REQUIREMENTS:
+1. Return ONLY valid TMDB IDs (numeric IDs from themoviedb.org)
+2. Provide exactly 5 movies and 5 TV series
+3. Return ONLY a JSON object, no other text or explanation
+4. Use this exact format: {"movies": [id1, id2, id3, id4, id5], "tv": [id1, id2, id3, id4, id5]}
+5. IDs must be real TMDB IDs (e.g., Fight Club = 550, Breaking Bad = 1396)
+6. Do not include quotes around numbers
+7. No markdown, no code blocks, just raw JSON
+
+Example response format:
+{"movies": [550, 238, 680, 424, 13], "tv": [1396, 1399, 60735, 82856, 100088]}
+
+Return ONLY the JSON object with valid TMDB IDs.
+`;

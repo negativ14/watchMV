@@ -1,6 +1,7 @@
 "use client";
 import useWatchHistory from "@/hooks/useWatchHistory";
 import { Image_BASE_URL } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { setContentMode } from "@/store/features/uiSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
@@ -31,20 +32,26 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
 
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">
-      {list?.map((item) => (
+      {list?.map((item, index) => (
         <div
           key={item.id as number}
           onClick={() => handleCard(item.id as number, item)}
-          className="relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer"
+          className={cn(
+            "relative flex-shrink-0 group max-w-fit w-[160px] cursor-pointer",
+            index === list.length - 1 && "border-r"
+          )}
         >
           <div className="flex flex-col justify-between h-[280px] w-full">
             <div className="relative flex items-center justify-center px-4 py-6 flex-1">
               <Image
                 width={128}
                 height={192}
-                src={`${Image_BASE_URL}${item.poster_path as string}`}
+                loading="lazy"
+                priority={false}
+                src={`${Image_BASE_URL}${
+                  (item.poster_path || item.profile_path) as string
+                }`}
                 alt="poster image"
-                priority
                 className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
               />
             </div>

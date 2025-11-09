@@ -70,6 +70,8 @@ export default async function ContentProvider({
                 alt="logo provider"
                 width={80}
                 height={80}
+                loading="lazy"
+                priority={false}
                 className="rounded-2xl shadow-lg"
               />
               <p className="text-secondary-foreground text-start text-md whitespace-nowrap truncate overflow-hidden">

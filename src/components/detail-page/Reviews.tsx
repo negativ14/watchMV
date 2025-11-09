@@ -48,6 +48,8 @@ function ReviewCard({ item }: { item: IReview }) {
           alt="avatar"
           height={40}
           width={40}
+          loading="lazy"
+          priority={false}
           className="rounded-full object-cover"
         />
         <h2 className="text-xl font-medium tracking-tight">
