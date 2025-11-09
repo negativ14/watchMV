@@ -15,7 +15,7 @@ export default function Page() {
 
       <div className="border-b border-foreground/30 border-dashed relative overflow-hidden">
         <div className="h-20 border-x border-dashed max-w-7xl mx-auto bg-gradient-to-br from-sky-600 to-blue-600 opacity-80 flex items-center">
-          <h1 className="text-2xl md:text-4xl font-semibold tracking-tighter px-4 text-sky-100 mx-auto">
+          <h1 className="text-2xl md:text-4xl font-semibold tracking-tighter px-4 text-sky-50 mx-auto">
             Your Library
           </h1>
 
