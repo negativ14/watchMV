@@ -33,10 +33,20 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
       toast.success("AI Mode turned on.");
     }
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e as unknown as React.FormEvent);
+    }
+  };
+
   return (
     <div className="border-b border-dashed border-foreground/30">
       <div className="flex flex-col md:flex-row item-center gap-4 max-w-7xl mx-auto w-full p-4 border-x">
         <form
+          role="search"
+          aria-label="Site search"
           onSubmit={handleSubmit}
           className="flex items-center gap-4 w-full"
         >
@@ -44,10 +54,17 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="search anything...."
             className="w-full flex-1"
+            aria-label="Search input"
+            autoFocus
           />
-          <Button className="cursor-pointer" type="submit">
+          <Button
+            aria-label="Submit search"
+            className="cursor-pointer"
+            type="submit"
+          >
             Search
           </Button>
         </form>
@@ -60,6 +77,7 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
           </div>
 
           <button
+            aria-label="Toggle AI mode"
             onClick={hanldeAIMode}
             className={cn(
               "relative z-10 text-sm px-4 py-2.5 rounded-md whitespace-nowrap cursor-pointer transition-all duration-300 ease-in-out w-full md:w-fit text-violet-100",

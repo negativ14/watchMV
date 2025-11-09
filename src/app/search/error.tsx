@@ -23,7 +23,7 @@ export default function Error({
         Something went wrong!!!
       </h1>
       <p className="text-muted-foreground mb-6">
-        Don’t worry — this page just needs a quick refresh.
+        Don’t worry — this may be cause due to excess use of api. Try sometimes later.
       </p>
       <div className="flex gap-3">
         <Button onClick={() => reset()}>Try Again</Button>

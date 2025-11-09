@@ -15,6 +15,7 @@ import {
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
 import { cn } from "@/lib/utils";
+import fallBackPoster from "@/assets/images/movie_fallback.jpeg";
 
 export interface TMDBItem {
   id: number;
@@ -110,11 +111,15 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${Image_BASE_URL}${item.poster_path as string}`}
+                      src={
+                        item?.poster_path
+                          ? `${Image_BASE_URL}${item.poster_path as string}`
+                          : fallBackPoster
+                      }
                       alt="poster image"
                       loading="lazy"
                       priority={false}
-                      className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                      className="object-cover select-none rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>
                   <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground">
@@ -186,11 +191,15 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${Image_BASE_URL}${item.poster_path as string}`}
+                      src={
+                        item?.poster_path
+                          ? `${Image_BASE_URL}${item.poster_path as string}`
+                          : fallBackPoster
+                      }
                       alt="poster image"
                       loading="lazy"
                       priority={false}
-                      className="object-cover rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                      className="object-cover select-none rounded-lg group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>
                   <p className="border-t px-4 py-2 truncate whitespace-nowrap overflow-hidden w-full text-foreground/80 group-hover:text-foreground relative">
@@ -251,13 +260,17 @@ export default function LibraryCards({
                     <Image
                       width={128}
                       height={192}
-                      src={`${Image_BASE_URL}${
-                        item.contentDetails.poster_path as string
-                      }`}
+                      src={
+                        item.contentDetails.poster_path
+                          ? `${Image_BASE_URL}${
+                              item.contentDetails.poster_path as string
+                            }`
+                          : fallBackPoster
+                      }
                       alt="poster image"
                       loading="lazy"
                       priority={false}
-                      className="object-cover rounded-lg max-h-[192px] group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
+                      className="object-cover select-none rounded-lg max-h-[192px] group-hover:scale-[1.2] transition-all duration-300 ease-in-out group-hover:z-10 group-hover:shadow-2xl"
                     />
                   </div>
 

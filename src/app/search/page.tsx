@@ -35,7 +35,7 @@ export default async function Page({
 
         <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
           <div className="max-w-7xl mx-auto border-x text-center px-4">
-            <h1 className="text-xl font-semibold tracking-tight text-muted-foreground leading-relaxed">
+            <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
               Start typing above to search for your favorite movies or shows!!
             </h1>
           </div>
@@ -46,25 +46,42 @@ export default async function Page({
     );
   }
 
-  let movies;
-  let tv;
-  let data;
+  let movies: Record<string, unknown>[] = [];
+  let tv: Record<string, unknown>[] = [];
+  let movieData;
+  let tvData;
 
   if (aiMode === "false") {
-    const url = `${BASE_URL}/search/multi?query=${query}&include_adult=${adult}&language=en-US&page=1`;
-    data = await fetchTMDB(url);
-    console.log("the search data is", data.data);
-    movies = data?.data?.results?.filter(
-      (item: Record<string, unknown>) => !!item?.title && !!item.poster_path
-    );
-    tv = data?.data?.results?.filter(
-      (item: Record<string, unknown>) =>
-        !!item?.name && !!item?.first_air_date && !!item?.poster_path
-    );
+    const movieUrl = `${BASE_URL}/search/movie?query=${query}&include_adult=${adult}&language=en-US&page=1`;
+    const tvUrl = `${BASE_URL}/search/tv?query=${query}&include_adult=${adult}&language=en-US&page=1`;
+
+    const urls = [movieUrl, tvUrl];
+
+    const urlsPromises = urls.map((url) => fetchTMDB(url));
+
+    const urlsResults = await Promise.allSettled(urlsPromises);
+    console.log("the urlsResults after aait are", urlsResults);
+
+    const successfullMovies = urlsResults[0];
+    const successfullTV = urlsResults[1];
+
+    if (successfullMovies?.status === "fulfilled") {
+      movieData = successfullMovies?.value;
+      movies = successfullMovies?.value?.data?.results;
+    } else {
+      movieData = { error: true, empty: true, data: null };
+    }
+
+    if (successfullTV?.status === "fulfilled") {
+      tvData = successfullTV?.value;
+      tv = successfullTV?.value?.data?.results;
+    }
+    console.log("the movie are", movies);
+    console.log("the tv are", tv);
   } else {
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: "gemini-2.0-flash",
         contents: buildPrompt(query),
       });
 
@@ -106,34 +123,10 @@ export default async function Page({
           tv = successfullTV
             .filter((item) => !item.error)
             .map((item) => item.data);
-
-          if (movies.length === 0 && tv.length === 0) {
-            return (
-              <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] flex items-center justify-center">
-                <div className="max-w-7xl mx-auto border-x text-center px-4">
-                  <h1 className="text-xl font-semibold tracking-tight text-muted-foreground leading-relaxed">
-                    Hmm... couldn’t find anything that matches your request!!!
-                    <br />
-                    Try refining your prompt — or maybe Gemini just had a nap!
-                  </h1>
-                </div>
-              </div>
-            );
-          }
         }
       }
     } catch (error) {
       console.error("Could not parse AI JSON:", error);
-
-      <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] flex items-center justify-center">
-        <div className="max-w-7xl mx-auto border-x text-center px-4">
-          <h1 className="text-xl font-semibold tracking-tight text-muted-foreground">
-            Gemini sent something weird!!!!!
-            <br />
-            Please try again!
-          </h1>
-        </div>
-      </div>;
     }
   }
 
@@ -156,44 +149,59 @@ export default async function Page({
         <SearchBar initialQuery={query} />
       </div>
 
-      {(data?.error || data?.empty) && (
-        <div className="border-b border-dashed border-foreground/30 mt-4 ">
-          <div className="max-w-7xl mx-auto border-x border-b">
-            <h1 className="font-semibold tracking-tight px-4 py-1 text-xl flex justify-center md:items-center text-muted-foreground min-h-[60vh]">
-              Oops! TMDB didn’t feel like responding!!
-              <br />
-              This is a free API — give it another shot in a bit!
-            </h1>
-            <div className="h-10 border-t" />
+      <div className="min-h-[60vh] border-x max-w-7xl mx-auto">
+        {(movieData?.error ||
+          tvData?.error ||
+          (movieData?.empty && tvData?.empty)) && (
+          <div className="border-b border-dashed border-foreground/30 mt-4 ">
+            <div className="max-w-7xl mx-auto border-x border-b">
+              <h1 className="tracking-tight px-4 py-1 text-xl flex justify-center md:items-center text-muted-foreground min-h-[60vh]">
+                Oops! TMDB didn’t feel like responding!!
+                <br />
+                This is a free API — give it another shot in a bit!
+              </h1>
+              <div className="h-10 border-t" />
+            </div>
+          </div>
+        )}
+
+        {movies?.length === 0 && tv?.length === 0 && (
+          <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] flex items-center justify-center">
+            <div className="max-w-7xl mx-auto border-x text-center px-4">
+              <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
+                Hmm... couldn’t find anything that matches your request!!!
+                <br />
+                Try refining your prompt — or maybe Gemini just had a nap!
+              </h1>
+            </div>
+          </div>
+        )}
+
+        <div className="border-b border-foreground/30 border-dashed">
+          <div className="max-w-7xl mx-auto">
+            {movies?.length > 0 && (
+              <div className="border-b border-x">
+                <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
+                  Movies
+                </h2>
+                <div className="overflow-x-scroll scroll-hide">
+                  <Cards list={movies} />
+                </div>
+              </div>
+            )}
+            {tv?.length > 0 && (
+              <div className="border-x">
+                <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
+                  TV Series
+                </h2>
+                <div className="overflow-x-scroll scroll-hide">
+                  <Cards list={tv} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
-
-      <div className="border-b border-foreground/30 border-dashed">
-        <div className="max-w-7xl mx-auto">
-          {movies && (
-            <div className="border-b border-x">
-              <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
-                Movies
-              </h2>
-              <div className="overflow-x-scroll scroll-hide">
-                <Cards list={movies} />
-              </div>
-            </div>
-          )}
-          {tv && (
-            <div className="border-x">
-              <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
-                TV Series
-              </h2>
-              <div className="overflow-x-scroll scroll-hide">
-                <Cards list={tv} />
-              </div>
-            </div>
-          )}
-        </div>
       </div>
-
       <Footer />
     </div>
   );
