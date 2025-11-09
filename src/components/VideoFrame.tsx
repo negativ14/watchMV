@@ -14,10 +14,12 @@ export default function VideoFrame({
   contentType,
   contentDetails,
   videoKey,
+  id,
 }: {
   contentType: ContentMode;
   contentDetails: TMDBContent;
   videoKey: string;
+  id?: number;
 }) {
   const { handleAddToWatchLater, handleRemoveFromWatchLater } = useWatchLater();
 
@@ -71,45 +73,47 @@ export default function VideoFrame({
       ></iframe>
       <div className="absolute inset-0 bg-gradient-to-b from-black to-transparent" />
 
-      {contentDetails && <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          duration: 0.6,
-          ease: "easeInOut",
-          delay: 0.8,
-        }}
-        className="absolute max-w-lg bottom-25 left-5 hidden md:flex flex-col gap-6"
-      >
-        <div className="flex flex-col gap-2">
-          <h2 className="font-semibold text-4xl text-white text-shadow-lg">
-            {(contentDetails?.name || contentDetails?.title) as string}
-          </h2>
-          <p className="text-xl text-white/80 text-shadow-lg line-clamp-3">
-            {(contentDetails?.overview as string) || "the"}
-          </p>
-        </div>
+      {contentDetails && !id && (
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+            delay: 0.8,
+          }}
+          className="absolute max-w-lg bottom-25 left-5 hidden md:flex flex-col gap-6"
+        >
+          <div className="flex flex-col gap-2">
+            <h2 className="font-semibold text-4xl text-white text-shadow-lg">
+              {(contentDetails?.name || contentDetails?.title) as string}
+            </h2>
+            <p className="text-xl text-white/80 text-shadow-lg line-clamp-3">
+              {(contentDetails?.overview as string) || "the"}
+            </p>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handlePlayClick}
-            className={cn(
-              "text-white text-xl rounded-md font-medium hover:opacity-90 cursor-pointer px-4 py-1.5",
-              contentType === "movie"
-                ? "bg-gradient-to-br from-movie-primary to-sky-600"
-                : "bg-gradient-to-br from-tv-primary to-pink-400"
-            )}
-          >
-            Play now
-          </button>
-          <button
-            onClick={handleWatchLater}
-            className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5"
-          >
-            {existInWatchLater ? "Remove" : "Watch later"}
-          </button>
-        </div>
-      </motion.div>}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handlePlayClick}
+              className={cn(
+                "text-white text-xl rounded-md font-medium hover:opacity-90 cursor-pointer px-4 py-1.5",
+                contentType === "movie"
+                  ? "bg-gradient-to-br from-movie-primary to-sky-600"
+                  : "bg-gradient-to-br from-tv-primary to-pink-400"
+              )}
+            >
+              Play now
+            </button>
+            <button
+              onClick={handleWatchLater}
+              className="text-white text-xl rounded-md font-medium hover:bg-white/30 cursor-pointer px-4 py-1.5"
+            >
+              {existInWatchLater ? "Remove" : "Watch later"}
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }

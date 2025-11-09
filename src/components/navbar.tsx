@@ -6,11 +6,20 @@ import Menubar from "./Menubar";
 import { Search } from "lucide-react";
 import SpringModal from "./ui/springModal";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const [mounted, setMounted] = useState(false);
   const { navUrls, handleKidMode, isModalOpen, setModalOpen, currentKidMode } =
     useNavbar();
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <nav className="absolute top-0 inset-x-0 px-4 md:px-8 flex justify-between items-center">
       <h1 className="text-2xl md:text-4xl font-bold text-white text-shadow-md pb-8 mt-4 no-select">
@@ -21,7 +30,11 @@ export default function Navbar() {
       <div className="md:flex hidden gap-6">
         <ul className="flex items-center gap-6 text-white">
           {navUrls.map((item) => (
-            <li key={item.id} onClick={item.onClick} className="relative group cursor-pointer">
+            <li
+              key={item.id}
+              onClick={item.onClick}
+              className="relative group cursor-pointer"
+            >
               <Link href={item.path} className="px-1.5 py-0.5">
                 {item.name}
               </Link>

@@ -27,14 +27,16 @@ export type TMDBContent = {
 
 export default async function VideoContainer({
   contentType,
+  id,
 }: {
   contentType: ContentMode;
+  id?: number;
 }) {
   let movieKey = null;
   let tvKey = null;
   let movieDetails: TMDBContent | null = null;
   let tvDetails: TMDBContent | null = null;
-  const moviesUrl = `h${BASE_URL}/${contentType}/popular?language=en-US`;
+  const moviesUrl = `${BASE_URL}/${contentType}/popular?language=en-US`;
 
   try {
     const dataMovies = await fetchCache(moviesUrl);
@@ -46,7 +48,9 @@ export default async function VideoContainer({
     } else {
       tvDetails = randomItem;
     }
-    const videoUrl = `h${BASE_URL}/${contentType}/${randomItem?.id}/videos?language=en-US`;
+    const videoUrl = id
+      ? `${BASE_URL}/${contentType}/${id}/videos?language=en-US`
+      : `${BASE_URL}/${contentType}/${randomItem?.id}/videos?language=en-US`;
 
     const dataVideos = await fetchCache(videoUrl);
 
@@ -148,6 +152,7 @@ export default async function VideoContainer({
         videoKey={key}
         contentDetails={details}
         contentType={contentType}
+        id={id}
       />
     </div>
   );

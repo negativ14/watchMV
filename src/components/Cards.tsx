@@ -15,6 +15,8 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
   );
   const dispatch = useAppDispatch();
   const { handleAddToWatchHistory } = useWatchHistory();
+  const kidMode = useAppSelector((state) => state.userData.kidMode);
+  const newList = kidMode ? list.filter((item) => !item.adult) : list;
 
   const handleCard = (id: number, contentDetails: Record<string, unknown>) => {
     if (currentContentMode === "movie") {
@@ -33,7 +35,7 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
 
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">
-      {list?.map((item, index) => (
+      {newList?.map((item, index) => (
         <div
           key={item.id as number}
           onClick={() => handleCard(item.id as number, item)}

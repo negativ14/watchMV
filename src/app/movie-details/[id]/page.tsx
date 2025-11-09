@@ -6,14 +6,14 @@ import ContentSimilar from "@/components/detail-page/ContentSimilar";
 import ContentReviews from "@/components/detail-page/ContentReviews";
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
-import VideoPlayer from "@/components/VideoPlayer";
 import { Suspense } from "react";
 import ContentDetailsSkeleton from "@/components/skeletons/contentDetailsSkeletons";
 import ContentProviderSkeleton from "@/components/skeletons/contentProvidersSkeleton";
 import ContentCastSkeleton from "@/components/skeletons/contentCastSkeleton";
 import ContentSimilarSkeleton from "@/components/skeletons/contentSimilarSkeleton";
 import ContentReviewsSkeleton from "@/components/skeletons/contentReviewsSkeletons";
-import VideoPlayerSkeleton from "@/components/skeletons/videoPlayerSkeleton";
+import VideoContainerSkeleton from "@/components/skeletons/videoContainerSkeleton";
+import VideoContainer from "@/components/videoContainer";
 
 export default async function Page({
   params,
@@ -30,8 +30,8 @@ export default async function Page({
       <HomeNav />
       <div className="border-b border-foreground/30 border-dashed">
         <div className="max-w-7xl mx-auto border">
-          <Suspense fallback={<VideoPlayerSkeleton />}>
-            <VideoPlayer videoKey="7ogVp-d-CdE" />
+          <Suspense fallback={<VideoContainerSkeleton />}>
+            <VideoContainer contentType="movie" id={id} />
           </Suspense>
         </div>
         <div className="border-t h-10">
