@@ -1,12 +1,11 @@
-import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
 import List from "@/components/List";
+import Navbar from "@/components/navbar";
 import ListSkeleton from "@/components/skeletons/listSkeleton";
 import VideoContainerSkeleton from "@/components/skeletons/videoContainerSkeleton";
 import VideoContainer from "@/components/videoContainer";
 import { endpoints } from "@/lib/constants";
 import { Suspense } from "react";
-const Navbar = dynamic(() => import("@/components/navbar"), { ssr: false });
 
 export default function Home() {
   return (
