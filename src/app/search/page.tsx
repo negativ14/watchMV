@@ -45,9 +45,9 @@ export default async function Page({
           <SearchBar initialQuery={query} />
         </div>
 
-        <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
-          <div className="max-w-7xl mx-auto border-x text-center px-4">
-            <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
+        <div className="border-b border-dashed border-foreground/30 ">
+          <div className="max-w-7xl w-full mx-auto border-x text-center px-4">
+            <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
               {languageConfig[language].searchBar.emptyQueryError}
             </h1>
           </div>
@@ -72,7 +72,6 @@ export default async function Page({
     const urlsPromises = urls.map((url) => fetchTMDB(url));
 
     const urlsResults = await Promise.allSettled(urlsPromises);
-    console.log("the urlsResults after aait are", urlsResults);
 
     const successfullMovies = urlsResults[0];
     const successfullTV = urlsResults[1];
@@ -88,8 +87,6 @@ export default async function Page({
       tvData = successfullTV?.value;
       tv = successfullTV?.value?.data?.results;
     }
-    console.log("the movie are", movies);
-    console.log("the tv are", tv);
   } else {
     try {
       const response = await ai.models.generateContent({

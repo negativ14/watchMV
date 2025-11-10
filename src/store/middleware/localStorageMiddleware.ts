@@ -17,7 +17,7 @@ export const localStorageMiddleware: Middleware =
         favorites: state.libraryData.favorites,
         watchLater: state.libraryData.watchLater,
         watchHistory: state.libraryData.watchHistory,
-        searchHistory: state.libraryData.searchHitory,
+        searchHistory: state.libraryData.searchHistory,
       };
 
       localStorage.setItem("userData", JSON.stringify(userData));

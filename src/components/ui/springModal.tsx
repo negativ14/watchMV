@@ -45,7 +45,7 @@ export default function SpringModal({
                 <h2 className="font-bold tracking-tight text-2xl text-shadow-2xs">
                   {currentKidMode
                     ? languageConfig[currentLanguage].springModal.turnOff
-                    : languageConfig[currentLanguage].springModal.descriptionOn}
+                    : languageConfig[currentLanguage].springModal.turnOn}
                 </h2>
                 {currentLanguage === "en" && (
                   <p className="text-shadow-2xs text-lg font-light/loose">

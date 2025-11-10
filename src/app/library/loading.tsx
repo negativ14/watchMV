@@ -1,7 +1,7 @@
-import HomeNav from "@/components/HomeNav";
 import Footer from "@/components/Footer";
 import LibraryListSkeleton from "@/components/skeletons/libraryListSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import HomeNavSkeleton from "@/components/skeletons/homeNavSkeleton";
 
 export default function Loading() {
   return (
@@ -10,7 +10,7 @@ export default function Loading() {
         <div className="max-w-[1360px] w-full h-full border-x border-dashed border-foreground/30"></div>
       </div>
 
-      <HomeNav />
+      <HomeNavSkeleton />
 
       <div className="border-b border-foreground/30 border-dashed relative overflow-hidden">
         <div className="h-20 border-x border-dashed max-w-7xl mx-auto bg-gradient-to-br from-sky-600 to-blue-600 opacity-80 flex items-center justify-center">
@@ -25,8 +25,6 @@ export default function Loading() {
       <LibraryListSkeleton />
       <LibraryListSkeleton />
       <LibraryListSkeleton />
-
-      <Footer />
     </main>
   );
 }

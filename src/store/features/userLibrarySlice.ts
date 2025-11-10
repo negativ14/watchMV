@@ -14,14 +14,14 @@ interface LibraryState {
     contentType: ContentMode;
     contentDetails: Record<string, unknown>;
   }>;
-  searchHitory: string[];
+  searchHistory: string[];
 }
 
-const initialState: LibraryState = {
+export const initialState: LibraryState = {
   favorites: { movies: [], tv: [] },
   watchLater: { movies: [], tv: [] },
   watchHistory: [],
-  searchHitory: [],
+  searchHistory: [],
 };
 
 const librarySlice = createSlice({
@@ -145,19 +145,35 @@ const librarySlice = createSlice({
       state.watchHistory = newWatchHistory;
     },
     addToSearchHistory: (state, action: PayloadAction<string>) => {
-      state.searchHitory = [action.payload, ...state.searchHitory];
+      if (action.payload.trim()) {
+        const doesExist = state.searchHistory.some(
+          (item) => item === action.payload
+        );
+        if (doesExist) {
+          const newHistory = state.searchHistory.filter(
+            (item) => item !== action.payload
+          );
+          state.searchHistory = [action.payload, ...newHistory];
+        } else {
+          state.searchHistory = [action.payload, ...state.searchHistory];
+        }
+      }
+
+      if (state.searchHistory.length > 10) {
+        state.searchHistory = state.searchHistory.slice(0, 10);
+      }
     },
     removeFromSearchHistory: (
       state,
       action: PayloadAction<{ index: number }>
     ) => {
-      const newHistory = state.searchHitory.filter(
+      const newHistory = state.searchHistory.filter(
         (item, index) => index !== action.payload.index
       );
-      state.searchHitory = newHistory;
+      state.searchHistory = newHistory;
     },
     clearSearchHistory: (state) => {
-      state.searchHitory = [];
+      state.searchHistory = [];
     },
     setFavorites: (
       state,
@@ -191,8 +207,8 @@ const librarySlice = createSlice({
     clearWatchHistory: (state) => {
       state.watchHistory = [];
     },
-    setSearchHistory: (state, action: PayloadAction<string[]>) => {
-      state.searchHitory = action.payload;
+    setSearchHistory: (state, action: PayloadAction<string[] | undefined>) => {
+      state.searchHistory = Array.isArray(action.payload) ? action.payload : [];
     },
   },
 });
@@ -211,6 +227,6 @@ export const {
   removeFromWatchHistory,
   removeFromWatchLater,
   clearWatchHistory,
-  clearSearchHistory
+  clearSearchHistory,
 } = librarySlice.actions;
 export default librarySlice.reducer;
