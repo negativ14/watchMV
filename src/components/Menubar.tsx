@@ -3,7 +3,6 @@ import { MenuIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavbar } from "@/hooks/useNavbar";
-import { langugaes } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
 
@@ -12,8 +11,8 @@ export default function Menubar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isLanguageOptionOpen, setLanguageOptionOpen] =
     useState<boolean>(false);
-  const { handleLanguage, mobileOptions } = useNavbar();
-  const currentKidMode = useAppSelector(state => state.userData.kidMode)
+  const { handleLanguage, mobileOptions, langugaes } = useNavbar();
+  const currentKidMode = useAppSelector((state) => state.userData.kidMode);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -67,7 +66,12 @@ export default function Menubar() {
                 key={item.id}
                 className="relative"
               >
-                <span className={cn("flex items-center gap-3 text-muted-foreground whitespace-nowrap active:text-foreground hover:text-foreground w-full pr-4 pl-2 py-1", item.id === "8" && currentKidMode  && "text-sky-500")}>
+                <span
+                  className={cn(
+                    "flex items-center gap-3 text-muted-foreground whitespace-nowrap active:text-foreground hover:text-foreground w-full pr-4 pl-2 py-1",
+                    item.id === "8" && currentKidMode && "text-sky-500"
+                  )}
+                >
                   {<item.icon className="size-3.5" />}
                   {item.name}
                 </span>

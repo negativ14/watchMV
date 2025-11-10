@@ -1,17 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
 import { toast } from "sonner";
+import { languageConfig } from "@/lib/languages";
 
 export default function SearchBar({ initialQuery }: { initialQuery: string }) {
   const [query, setQuery] = useState<string>(initialQuery);
   const [aiMode, setAIMode] = useState<boolean>(false);
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
   const adult = useAppSelector((state) => state.userData.kidMode);
+  const currentLanguage = useAppSelector((state) => state.userData.language);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,18 +23,19 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
       push(
         `/search?query=${encodeURIComponent(
           query.trim()
-        )}&adult=${adult}&aiMode=${aiMode}`
+        )}&adult=${adult}&aiMode=${aiMode}&language=${currentLanguage}`
       );
+      refresh();
     }
   };
 
   const hanldeAIMode = () => {
     if (aiMode) {
       setAIMode(false);
-      toast.success("AI Mode turned off!");
+      toast.success(languageConfig[currentLanguage].searchBar.toastOff);
     } else {
       setAIMode(true);
-      toast.success("AI Mode turned on.");
+      toast.success(languageConfig[currentLanguage].searchBar.toastOn);
     }
   };
 
@@ -40,6 +45,8 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
       handleSubmit(e as unknown as React.FormEvent);
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="border-b border-dashed border-foreground/30">
@@ -55,7 +62,11 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="search anything...."
+            placeholder={
+              currentLanguage === "en"
+                ? languageConfig[currentLanguage].searchBar.placeholder
+                : languageConfig[currentLanguage].searchBar.placeholder
+            }
             className="w-full flex-1"
             aria-label="Search input"
             autoFocus
@@ -65,7 +76,7 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
             className="cursor-pointer"
             type="submit"
           >
-            Search
+            {languageConfig[currentLanguage].searchBar.search}
           </Button>
         </form>
 
@@ -86,7 +97,9 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
                 : "bg-secondary hover:opacity-90"
             )}
           >
-            {aiMode ? "AI Mode On" : "Turn On AI Mode"}
+            {aiMode
+              ? languageConfig[currentLanguage].searchBar.AIModeOn
+              : languageConfig[currentLanguage].searchBar.TurnOnAIMode}
           </button>
         </div>
       </div>

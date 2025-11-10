@@ -156,6 +156,9 @@ const librarySlice = createSlice({
       );
       state.searchHitory = newHistory;
     },
+    clearSearchHistory: (state) => {
+      state.searchHitory = [];
+    },
     setFavorites: (
       state,
       action: PayloadAction<{
@@ -208,5 +211,6 @@ export const {
   removeFromWatchHistory,
   removeFromWatchLater,
   clearWatchHistory,
+  clearSearchHistory
 } = librarySlice.actions;
 export default librarySlice.reducer;

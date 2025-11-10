@@ -5,13 +5,25 @@ import SearchBar from "@/components/SearchBar";
 import { BASE_URL, buildPrompt } from "@/lib/constants";
 import fetchTMDB from "@/lib/fetchTMDB";
 import { ai } from "@/lib/ai";
+import { Languages } from "@/types/types";
+import { languageConfig } from "@/lib/languages";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string; adult?: string; aiMode?: string }>;
+  searchParams: Promise<{
+    query?: string;
+    adult?: string;
+    aiMode?: string;
+    language?: Languages;
+  }>;
 }) {
-  const { query = "", adult = "false", aiMode = "false" } = await searchParams;
+  const {
+    query = "",
+    adult = "false",
+    aiMode = "false",
+    language = "en",
+  } = await searchParams;
 
   if (!query.trim()) {
     return (
@@ -36,7 +48,7 @@ export default async function Page({
         <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
           <div className="max-w-7xl mx-auto border-x text-center px-4">
             <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
-              Start typing above to search for your favorite movies or shows!!
+              {languageConfig[language].searchBar.emptyQueryError}
             </h1>
           </div>
         </div>
@@ -156,9 +168,9 @@ export default async function Page({
           <div className="border-b border-dashed border-foreground/30 mt-4 ">
             <div className="max-w-7xl mx-auto border-x border-b">
               <h1 className="tracking-tight px-4 py-1 text-xl flex justify-center md:items-center text-muted-foreground min-h-[60vh]">
-                Oops! TMDB didn’t feel like responding!!
+                {languageConfig[language].searchBar.dataEmptyOrError.error1}
                 <br />
-                This is a free API — give it another shot in a bit!
+                {languageConfig[language].searchBar.dataEmptyOrError.error2}
               </h1>
               <div className="h-10 border-t" />
             </div>
@@ -169,9 +181,9 @@ export default async function Page({
           <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] flex items-center justify-center">
             <div className="max-w-7xl mx-auto border-x text-center px-4">
               <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
-                Hmm... couldn’t find anything that matches your request!!!
+                {languageConfig[language].searchBar.lengthZeroError.error1}
                 <br />
-                Try refining your prompt — or maybe Gemini just had a nap!
+                {languageConfig[language].searchBar.lengthZeroError.error2}
               </h1>
             </div>
           </div>

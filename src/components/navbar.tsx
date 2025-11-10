@@ -7,11 +7,18 @@ import { Search } from "lucide-react";
 import SpringModal from "./ui/springModal";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { languageConfig } from "@/lib/languages";
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
-  const { navUrls, handleKidMode, isModalOpen, setModalOpen, currentKidMode } =
-    useNavbar();
+  const {
+    navUrls,
+    handleKidMode,
+    isModalOpen,
+    setModalOpen,
+    currentKidMode,
+    currentLanguage,
+  } = useNavbar();
 
   useEffect(() => {
     setMounted(true);
@@ -50,7 +57,7 @@ export default function Navbar() {
             currentKidMode && "text-sky-500"
           )}
         >
-          Kid Mode
+          {languageConfig[currentLanguage].navbar.kidMode}
           <span className="absolute bottom-0 left-0 bg-white h-px w-full rounded-sm origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
         </button>
 
@@ -60,7 +67,9 @@ export default function Navbar() {
       </div>
 
       <div className="md:hidden flex items-center gap-6 mb-4">
-        <Link href={"/search"}>
+        <Link
+          href={`/search?query=&adult=${currentKidMode}&aiMode=false&language=${currentLanguage}`}
+        >
           <Search className="size-5 text-white" />
         </Link>
         <Menubar />

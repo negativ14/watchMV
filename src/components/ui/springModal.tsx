@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Dispatch, SetStateAction } from "react";
 import { toggleKidMode } from "@/store/features/userSlice";
 import { toast } from "sonner";
+import { languageConfig } from "@/lib/languages";
 
 export default function SpringModal({
   isModalOpen,
@@ -13,9 +14,9 @@ export default function SpringModal({
   isModalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const currentKidMode = useAppSelector(
-    (state) => state.userData.kidMode
-  );
+  const currentKidMode = useAppSelector((state) => state.userData.kidMode);
+
+  const currentLanguage = useAppSelector((state) => state.userData.language);
   const dispatch = useAppDispatch();
 
   return (
@@ -41,14 +42,26 @@ export default function SpringModal({
             <Baby className="absolute opacity-10 -rotate-50 size-50 -bottom-8 -right-5 " />
             <div className="relative flex flex-col gap-8">
               <div className="flex flex-col gap-2">
-                <h2 className="font-bold tracking-tight text-2xl text-shadow-2xs">{`Turn ${
-                  currentKidMode ? "Off" : "On"
-                } Kid Mode?`}</h2>
-                <p className="text-shadow-2xs text-lg font-light/loose">
-                  Kid Mode is now turned{" "}
-                  <strong>{currentKidMode ? "On" : "Off"}</strong>. It keeps the
-                  experience tailored for kids when enabled. Are you sure?
-                </p>
+                <h2 className="font-bold tracking-tight text-2xl text-shadow-2xs">
+                  {currentKidMode
+                    ? languageConfig[currentLanguage].springModal.turnOff
+                    : languageConfig[currentLanguage].springModal.descriptionOn}
+                </h2>
+                {currentLanguage === "en" && (
+                  <p className="text-shadow-2xs text-lg font-light/loose">
+                    Kid Mode is now turned{" "}
+                    <strong>{currentKidMode ? "On" : "Off"}</strong>. It keeps
+                    the experience tailored for kids when enabled. Are you sure?
+                  </p>
+                )}
+
+                {currentLanguage === "hindi" && (
+                  <p className="text-shadow-2xs text-lg font-light/loose">
+                    {currentKidMode
+                      ? languageConfig["hindi"].springModal.descriptionOn
+                      : languageConfig["hindi"].springModal.descriptionOff}
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-4 items-center">
@@ -57,18 +70,22 @@ export default function SpringModal({
                     dispatch(toggleKidMode());
                     setModalOpen(false);
                     toast.success(
-                      `Kid mode turned ${currentKidMode ? "Off" : "On"}`
+                      currentKidMode
+                        ? languageConfig[currentLanguage].springModal.toastOff
+                        : languageConfig[currentLanguage].springModal.toastOn
                     );
                   }}
                   className="bg-white rounded-sm text-sky-600 px-4 py-1.5 hover:bg-white/90 font-semibold cursor-pointer"
                 >
-                  Turn {`${currentKidMode ? "Off" : "On"}`}
+                  {currentKidMode
+                    ? languageConfig[currentLanguage].springModal.turnOff
+                    : languageConfig[currentLanguage].springModal.titleOn}
                 </button>
                 <button
                   onClick={() => setModalOpen(false)}
                   className="rounded-sm text-white px-4 py-1.5 font-semibold hover:bg-white/30 cursor-pointer"
                 >
-                  Cancel
+                  {languageConfig[currentLanguage].springModal.cancel}
                 </button>
               </div>
             </div>

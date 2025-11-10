@@ -1,19 +1,7 @@
-import { Languages } from "@/types/types";
-
-interface ILanguages {
-  id: Languages;
-  langugae: string;
-}
-
 export const BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 export const API_KEY = process.env.TMDB_API_KEY;
 export const Image_BASE_URL = "https://image.tmdb.org/t/p/w500";
 export const Provider_Base_URL = "https://image.tmdb.org/t/p/w185";
-
-export const langugaes: ILanguages[] = [
-  { id: "en", langugae: "English" },
-  { id: "hindi", langugae: "Hindi" },
-];
 
 export const options = {
   method: "GET",

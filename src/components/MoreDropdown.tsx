@@ -3,13 +3,13 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavbar } from "@/hooks/useNavbar";
-import { langugaes } from "@/lib/constants";
+import { languageConfig } from "@/lib/languages";
 
 export default function MoreDropdown() {
   const [moreIsOpen, setMoreIsOpen] = useState<boolean>(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { tabOptions, handleLanguage } = useNavbar();
+  const { tabOptions, handleLanguage, currentLanguage, langugaes } = useNavbar();
   const [isLanguageOptionOpen, setLanguageOptionOpen] =
     useState<boolean>(false);
 
@@ -44,7 +44,7 @@ export default function MoreDropdown() {
         role="menu"
         className="md:flex items-center group relative hidden text-white gap-0.5 py-1 px-2 cursor-pointer hover:text-shadow-sm p-0"
       >
-        More{" "}
+        {languageConfig[currentLanguage].navbar.more}
         <span>
           {moreIsOpen ? (
             <ChevronUp className="size-4 mt-0.5" />

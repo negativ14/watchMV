@@ -1,17 +1,31 @@
+"use client";
+import { useNavbar } from "@/hooks/useNavbar";
+import { languageConfig } from "@/lib/languages";
+import { useEffect, useState } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { TbBrandGithubFilled } from "react-icons/tb";
 
 export default function Footer() {
+  const { currentLanguage } = useNavbar();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <footer className="border-y border-foreground/30">
       <div className="flex flex-col gap-4 max-w-7xl mx-auto border-x">
         <div className="flex flex-col gap-1 p-4">
           <p className="text-sm text-muted-foreground">
-            © 2025 Rohit. All rights reserved.{" "}
+            {languageConfig[currentLanguage].footer.copyright}
           </p>
           <p className="text-sm text-muted-foreground">
-            Built for educational purposes. Not affiliated with Netflix. All
-            movie data from TMDB.
+            {languageConfig[currentLanguage].footer.description}
           </p>
         </div>
       </div>
@@ -19,14 +33,14 @@ export default function Footer() {
       <div className="border-t border-foreground/30">
         <div className="flex justify-between  px-4 py-2 mx-auto max-w-7xl border-x">
           <h2 className="text-muted-foreground">
-            Design and Developed by{" "}
+            {languageConfig[currentLanguage].footer.credits}
             <a
               href="https://negativ.in"
               rel="noopener noreferrer"
               target="_blank"
             >
               <span className="text-foreground underline underline-offset-4">
-                Rohit
+                {languageConfig[currentLanguage].footer.name}
               </span>
             </a>
           </h2>
