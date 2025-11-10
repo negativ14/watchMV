@@ -10,20 +10,17 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
   eslint: {
     ignoreDuringBuilds: true,
   },
-
   typescript: {
     ignoreBuildErrors: true,
   },
   typedRoutes: true,
-
   experimental: {
     reactCompiler: false,
-    optimizePackageImports: ["lucide-react", "sonner"], 
     serverActions: { bodySizeLimit: "2mb" },
+    optimizePackageImports: ["lucide-react", "sonner"],
   },
 };
 

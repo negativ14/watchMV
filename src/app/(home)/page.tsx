@@ -1,11 +1,13 @@
 import Footer from "@/components/Footer";
 import List from "@/components/List";
-import Navbar from "@/components/navbar";
+import ClientNavbar from "@/components/ClientNavbar";
 import ListSkeleton from "@/components/skeletons/listSkeleton";
 import VideoContainerSkeleton from "@/components/skeletons/videoContainerSkeleton";
 import VideoContainer from "@/components/videoContainer";
 import { endpoints } from "@/lib/constants";
 import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
@@ -30,7 +32,7 @@ export default function Home() {
               </Suspense>
             </div>
           </div>
-          <Navbar />
+          <ClientNavbar />
 
           <div className="absolute h-full w-10 -left-10 top-0 border bg-background hidden xl:block">
             <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />

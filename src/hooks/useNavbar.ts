@@ -20,6 +20,7 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 import { setContentMode } from "@/store/features/uiSlice";
 import { languageConfig } from "@/lib/languages";
+import { Route } from "next";
 
 export type ItemType = {
   id: string;
@@ -71,7 +72,7 @@ export const useNavbar = () => {
     toast.success(`Kid Mode turned ${currentKidMode ? "Off" : "On"}`);
   };
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path: Route) => {
     push(path);
   };
 

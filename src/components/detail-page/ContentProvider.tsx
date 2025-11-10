@@ -46,7 +46,7 @@ export default async function ContentProvider({
     );
   }
 
-  if (data.error) {
+  if (data?.error) {
     uniqueProviders =
       contentType === "movie"
         ? movieData.watchProviders

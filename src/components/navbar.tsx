@@ -8,6 +8,7 @@ import SpringModal from "./ui/springModal";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { languageConfig } from "@/lib/languages";
+import { Route } from "next";
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
@@ -42,7 +43,7 @@ export default function Navbar() {
               onClick={item.onClick}
               className="relative group cursor-pointer"
             >
-              <Link href={item.path} className="px-1.5 py-0.5">
+              <Link href={item.path as Route} className="px-1.5 py-0.5">
                 {item.name}
               </Link>
               <span className="absolute -bottom-1 left-0 bg-white h-px w-full rounded-sm origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />

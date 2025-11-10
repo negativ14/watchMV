@@ -1,6 +1,9 @@
 import { options } from "@/lib/constants";
 
 export default async function fetchCache(url: string) {
+  if (!url) {
+    return null;
+  }
   try {
     const response = await fetch(url, {
       ...options,

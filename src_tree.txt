@@ -1,0 +1,122 @@
+src
+├── app
+│   ├── (home)
+│   │   ├── loading.tsx
+│   │   └── page.tsx
+│   ├── auth
+│   │   └── page.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── library
+│   │   ├── loading.tsx
+│   │   └── page.tsx
+│   ├── movie-details
+│   │   └── [id]
+│   ├── page.tsx
+│   ├── search
+│   │   ├── error.tsx
+│   │   ├── loading.tsx
+│   │   └── page.tsx
+│   ├── StoreProvider.tsx
+│   ├── tv-series
+│   │   ├── loading.tsx
+│   │   └── page.tsx
+│   └── tv-series-details
+│       └── [id]
+├── assets
+│   ├── images
+│   │   ├── cloud.jpg
+│   │   ├── coverImg.jpg
+│   │   ├── coverImg2.jpg
+│   │   ├── dp.jpg
+│   │   ├── fallback_avatar.png
+│   │   ├── movie_fallback.jpeg
+│   │   └── netflix.jpg
+│   └── svgs
+│       ├── FilledBookMark.tsx
+│       ├── PinkHeartIcon.tsx
+│       ├── SearchIcon.tsx
+│       └── TriangleIcon.tsx
+├── components
+│   ├── BasicCards.tsx
+│   ├── Cards.tsx
+│   ├── detail-page
+│   │   ├── ContentCast.tsx
+│   │   ├── ContentDetails.tsx
+│   │   ├── ContentProvider.tsx
+│   │   ├── ContentReviews.tsx
+│   │   ├── ContentSimilar.tsx
+│   │   ├── Details.tsx
+│   │   ├── ReviewCard.tsx
+│   │   └── Reviews.tsx
+│   ├── EmptyState.tsx
+│   ├── Footer.tsx
+│   ├── HomeNav.tsx
+│   ├── LibraryCard.tsx
+│   ├── LibraryList.tsx
+│   ├── List.tsx
+│   ├── Menubar.tsx
+│   ├── MoreDropdown.tsx
+│   ├── navbar.tsx
+│   ├── SearchBar.tsx
+│   ├── skeletons
+│   │   ├── cardsSkeleton.tsx
+│   │   ├── contentCastSkeleton.tsx
+│   │   ├── contentDetailsSkeletons.tsx
+│   │   ├── contentProvidersSkeleton.tsx
+│   │   ├── contentReviewsSkeletons.tsx
+│   │   ├── contentSimilarSkeleton.tsx
+│   │   ├── homeNavSkeleton.tsx
+│   │   ├── libraryCardSkeleton.tsx
+│   │   ├── libraryListSkeleton.tsx
+│   │   ├── listSkeleton.tsx
+│   │   └── videoContainerSkeleton.tsx
+│   ├── ui
+│   │   ├── badge.tsx
+│   │   ├── button.tsx
+│   │   ├── dropdown-menu.tsx
+│   │   ├── input.tsx
+│   │   ├── skeleton.tsx
+│   │   ├── sonner.tsx
+│   │   ├── springModal.tsx
+│   │   ├── toogle-theme.tsx
+│   │   └── tooltip.tsx
+│   ├── videoContainer.tsx
+│   └── VideoFrame.tsx
+├── hooks
+│   ├── useFavorite.ts
+│   ├── useNavbar.ts
+│   ├── useSearchHistory.ts
+│   ├── useWatchHistory.ts
+│   └── useWatchLater.ts
+├── lib
+│   ├── ai.ts
+│   ├── constants.ts
+│   ├── fetchCache.ts
+│   ├── fetchTMDB.ts
+│   ├── languages
+│   │   ├── en.ts
+│   │   ├── hindi.ts
+│   │   └── index.tsx
+│   ├── utils.ts
+│   └── validations.ts
+├── middleware.tsx
+├── mock
+│   ├── data.ts
+│   ├── movie.ts
+│   └── tv.ts
+├── providers
+│   └── ThemeProvider.tsx
+├── store
+│   ├── features
+│   │   ├── uiSlice.ts
+│   │   ├── userLibrarySlice.ts
+│   │   └── userSlice.ts
+│   ├── hooks.ts
+│   ├── index.ts
+│   └── middleware
+│       └── localStorageMiddleware.ts
+└── types
+    └── types.ts
+
+27 directories, 93 files

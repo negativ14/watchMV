@@ -17,7 +17,7 @@ export default async function ContentCast({
   let cast = [];
   cast = data?.data?.cast || [];
 
-  if (data.error) {
+  if (data?.error) {
     cast = contentType === "movie" ? movieData.cast : tvData.cast;
   }
 
