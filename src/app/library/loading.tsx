@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import LibraryListSkeleton from "@/components/skeletons/libraryListSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import HomeNavSkeleton from "@/components/skeletons/homeNavSkeleton";
