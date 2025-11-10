@@ -28,7 +28,6 @@ export default async function ContentReviews({
   id: number;
 }) {
   const url = `${BASE_URL}/${contentType}/${id}/reviews?language=en-US&page=1`;
-  //   const url = "https://api.themoviedb.org/3/movie/640146/reviews?language=en-US&page=1";
   const data = await fetchTMDB(url);
 
   let reviews;

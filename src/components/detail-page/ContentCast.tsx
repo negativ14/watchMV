@@ -13,7 +13,6 @@ export default async function ContentCast({
   id: number;
 }) {
     const url = `${BASE_URL}/${contentType}/${id}/credits?language=en-US`;
-//   const url = "https://api.themoviedb.org/3/movie/6/credits?language=en-US";
   const data = await fetchTMDB(url);
   let cast = [];
   cast = data?.data?.cast || [];

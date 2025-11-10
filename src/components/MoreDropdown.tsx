@@ -9,9 +9,13 @@ export default function MoreDropdown() {
   const [moreIsOpen, setMoreIsOpen] = useState<boolean>(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { tabOptions, handleLanguage, currentLanguage, langugaes } = useNavbar();
+  const { tabOptions, handleLanguage, currentLanguage, langugaes } =
+    useNavbar();
   const [isLanguageOptionOpen, setLanguageOptionOpen] =
     useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,6 +40,8 @@ export default function MoreDropdown() {
     setMoreIsOpen(!moreIsOpen);
     setLanguageOptionOpen(false);
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="relative" ref={dropdownRef}>

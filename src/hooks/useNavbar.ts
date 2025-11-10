@@ -82,7 +82,7 @@ export const useNavbar = () => {
   const navUrls = [
     {
       id: "search",
-      path:  `/search?query=&adult=${currentKidMode}&aiMode=false&language=${currentLanguage}`,
+      path: `/search?query=&adult=${currentKidMode}&aiMode=false&language=${currentLanguage}`,
       name: languageConfig[currentLanguage].navbar.search,
     },
     {

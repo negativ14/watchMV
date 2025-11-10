@@ -13,7 +13,6 @@ export default async function ContentProvider({
   id: number;
 }) {
   const url = `${BASE_URL}/${contentType}/${id}/watch/providers`;
-  //   const url = "https://api.themoviedb.org/3/movie/693134/watch/providers";
   const data = await fetchTMDB(url);
   const providers = data?.data?.results?.US;
   const buyProvider = providers?.buy || [];

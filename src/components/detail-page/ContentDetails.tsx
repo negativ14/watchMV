@@ -29,7 +29,6 @@ export default async function ContentDetails({
   id: number;
 }) {
   const url = `${BASE_URL}/${contentType}/${id}?language=en-US`;
-  //   const url = "shit";
   const data = await fetchTMDB(url);
   let content = data?.data;
 

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import fallBackPoster from "@/assets/images/movie_fallback.jpeg";
+import { useEffect, useState } from "react";
 
 export default function Cards({ list }: { list: Record<string, unknown>[] }) {
   const { push } = useRouter();
@@ -17,6 +18,9 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
   const { handleAddToWatchHistory } = useWatchHistory();
   const kidMode = useAppSelector((state) => state.userData.kidMode);
   const newList = kidMode ? list.filter((item) => !item.adult) : list;
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => setMounted(true), []);
 
   const handleCard = (id: number, contentDetails: Record<string, unknown>) => {
     if (currentContentMode === "movie") {
@@ -32,6 +36,8 @@ export default function Cards({ list }: { list: Record<string, unknown>[] }) {
       push(`/tv-series-details/${id}`);
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="relative w-full flex transition-all duration-300 divide-x">

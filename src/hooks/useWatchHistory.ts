@@ -1,3 +1,4 @@
+'use client'
 import { languageConfig } from "@/lib/languages";
 import {
   addToWatchHistory,

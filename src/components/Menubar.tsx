@@ -13,6 +13,9 @@ export default function Menubar() {
     useState<boolean>(false);
   const { handleLanguage, mobileOptions, langugaes } = useNavbar();
   const currentKidMode = useAppSelector((state) => state.userData.kidMode);
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,6 +36,8 @@ export default function Menubar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
+
+  if (!mounted) return null;
 
   return (
     <div className="relative z-50" ref={dropdownRef}>

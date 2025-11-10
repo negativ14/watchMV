@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
 import { cn } from "@/lib/utils";
 import fallBackPoster from "@/assets/images/movie_fallback.jpeg";
+import { useEffect, useState } from "react";
 
 export interface TMDBItem {
   id: number;
@@ -50,6 +51,10 @@ export default function LibraryCards({
     (cardCategory === "watchLater" && watchLater?.tv) ||
     [];
 
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => setMounted(true), []);
+
   const handleMovieClick = (id: number) => {
     if (cardCategory === "favorite") {
       handleRemoveFromFavorite("movie", id);
@@ -71,6 +76,8 @@ export default function LibraryCards({
       handleRemoveFromWatchHistory(id);
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="relative">
