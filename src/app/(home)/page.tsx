@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Footer from "@/components/Footer";
 import List from "@/components/List";
 import ClientNavbar from "@/components/ClientNavbar";
@@ -6,8 +7,6 @@ import VideoContainerSkeleton from "@/components/skeletons/videoContainerSkeleto
 import VideoContainer from "@/components/videoContainer";
 import { endpoints } from "@/lib/constants";
 import { Suspense } from "react";
-
-export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
