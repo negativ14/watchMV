@@ -25,7 +25,7 @@ export default function Page() {
           <div className="h-full w-full overflow-hidden">
             <div className="relative aspect-video bg-black border-b border-foreground/30">
               <Suspense fallback={<VideoContainerSkeleton />}>
-                <VideoContainer contentType="movie" />
+                <VideoContainer contentType="tv" />
               </Suspense>
             </div>
           </div>

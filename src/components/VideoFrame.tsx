@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ContentMode } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
@@ -22,11 +22,6 @@ export default function VideoFrame({
   id?: number;
 }) {
   const { handleAddToWatchLater, handleRemoveFromWatchLater } = useWatchLater();
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const watchLaterMovies = useAppSelector(
     (state) => state.libraryData.watchLater.movies
@@ -67,10 +62,6 @@ export default function VideoFrame({
       push(`/tv-series-details/${contentDetails.id}`);
     }
   };
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <div className="relative w-full aspect-video overflow-hidden bg-black select-none">
