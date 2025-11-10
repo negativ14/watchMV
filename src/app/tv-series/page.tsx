@@ -22,10 +22,12 @@ export default function Page() {
           <div className="absolute inset-0 bg-[image:repeating-linear-gradient(315deg,transparent,transparent_4px,var(--pattern-line)_4px,var(--pattern-line)_6px)]" />
         </div>
         <div className="max-w-7xl h-full border-x-px mx-auto relative">
-          <div className="h-full w-full">
-            <Suspense fallback={<VideoContainerSkeleton />}>
-              <VideoContainer contentType="tv" />
-            </Suspense>
+          <div className="h-full w-full overflow-hidden">
+            <div className="relative aspect-video bg-black border-b border-foreground/30">
+              <Suspense fallback={<VideoContainerSkeleton />}>
+                <VideoContainer contentType="movie" />
+              </Suspense>
+            </div>
           </div>
           <Navbar />
 

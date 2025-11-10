@@ -24,9 +24,11 @@ export default function Home() {
 
         <div className="max-w-7xl h-full border-x-px mx-auto relative">
           <div className="h-full w-full overflow-hidden">
-            <Suspense fallback={<VideoContainerSkeleton />}>
-              <VideoContainer contentType="movie" />
-            </Suspense>
+            <div className="relative aspect-video bg-black border-b border-foreground/30">
+              <Suspense fallback={<VideoContainerSkeleton />}>
+                <VideoContainer contentType="movie" />
+              </Suspense>
+            </div>
           </div>
           <Navbar />
 

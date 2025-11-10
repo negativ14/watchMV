@@ -102,16 +102,31 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
           ></Input>
           {showHistory && searchHistory?.length > 0 && (
             <div
-              className="absolute top-12 pr-1 z-0 w-11/12"
+              className="absolute top-12 pr-1 z-50 w-11/12"
               ref={containerRef}
             >
-              <div className="bg-secondary border-px hover:bg-muted rounded-md divide-y px-4">
+              <div className="bg-secondary border-px hover:bg-muted rounded-md divide-y px-4 shadow-lg">
                 {searchHistory?.map((item, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between group py-2.5 overflow-hidden"
                   >
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowHistory(false);
+                        handleAddToSearchHistory(item);
+                        if (item.trim()) {
+                          push(
+                            `/search?query=${encodeURIComponent(
+                              item
+                            )}&adult=${adult}&aiMode=${aiMode}&language=${currentLanguage}`
+                          );
+                          refresh();
+                        }
+                      }}
+                      className="flex items-center gap-2 flex-1 min-w-0"
+                    >
                       <History className="size-4 text-muted-foreground flex-shrink-0" />
                       <span className="text-muted-foreground group-hover:text-foreground text-sm whitespace-nowrap truncate flex-1 cursor-pointer">
                         {item}{" "}

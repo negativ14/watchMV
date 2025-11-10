@@ -159,8 +159,7 @@ export default async function Page({
       </div>
 
       <div className="min-h-[60vh] border-x max-w-7xl mx-auto">
-        {(movieData?.error ||
-          tvData?.error ||
+        {((movieData?.error && tvData?.error) ||
           (movieData?.empty && tvData?.empty)) && (
           <div className="border-b border-dashed border-foreground/30 mt-4 ">
             <div className="max-w-7xl mx-auto border-x border-b">
