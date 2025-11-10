@@ -18,11 +18,11 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  typedRoutes: true,
 
   experimental: {
     reactCompiler: false,
     optimizePackageImports: ["lucide-react", "sonner"], 
-    typedRoutes: true,
     serverActions: { bodySizeLimit: "2mb" },
   },
 };
