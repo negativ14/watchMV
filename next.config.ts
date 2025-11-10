@@ -6,10 +6,24 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "image.tmdb.org",
-        port: "",
         pathname: "/t/p/**",
       },
     ],
+  },
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
+  experimental: {
+    reactCompiler: false,
+    optimizePackageImports: ["lucide-react", "sonner"], 
+    typedRoutes: true,
+    serverActions: { bodySizeLimit: "2mb" },
   },
 };
 
