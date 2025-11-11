@@ -13,7 +13,6 @@ export default async function List({
   let data;
   let list;
   if (!dataList) {
-    await new Promise((resolve) => setTimeout(resolve, 8000));
     data = await fetchCache(url || "");
     list = data?.results;
   }
