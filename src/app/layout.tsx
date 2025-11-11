@@ -12,6 +12,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "watchMV – Watch Movies & TV Shows Instantly",
+  metadataBase: new URL("https://watchmv.negativ.in"),
   description:
     "Discover and stream your favorite movies and TV shows with watchMV. Explore trending, top-rated, and upcoming content — all powered by TMDB.",
   keywords: [
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     title: "watchMV – Stream Movies & TV Shows Instantly",
     description:
       "Explore trending, top-rated, and upcoming movies and TV shows with watchMV. Powered by TMDB.",
-    url: "https://watchmv.vercel.app",
+    url: "https://watchmv.negativ.in",
     siteName: "watchMV",
     images: [
       {
@@ -58,6 +59,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="84257a7b-fbfc-4a25-8227-6dcc582ca7d3"
+        ></script>
+      </head>
       <body
         className={`${inter.className} antialiased`}
         suppressHydrationWarning

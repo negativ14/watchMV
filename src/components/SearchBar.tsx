@@ -100,7 +100,7 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
             className="w-full flex-1"
             aria-label="Search input"
           ></Input>
-          {showHistory && searchHistory?.length > 0 && (
+          {showHistory && query.length === 0 && searchHistory?.length > 0 && (
             <div
               className="absolute top-12 pr-1 z-50 w-11/12"
               ref={containerRef}
@@ -175,10 +175,10 @@ export default function SearchBar({ initialQuery }: { initialQuery: string }) {
             aria-label="Toggle AI mode"
             onClick={hanldeAIMode}
             className={cn(
-              "relative z-10 text-sm px-4 py-2.5 rounded-md whitespace-nowrap cursor-pointer transition-all duration-300 ease-in-out w-full md:w-fit text-black dark:text-violet-100",
+              "relative z-10 text-sm px-4 py-2.5 rounded-md whitespace-nowrap cursor-pointer transition-all duration-300 ease-in-out w-full md:w-fit dark:text-violet-100",
               aiMode
-                ? "bg-gradient-to-br from-indigo-500 to-violet-600"
-                : "bg-muted hover:opacity-90"
+                ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white"
+                : "bg-muted hover:opacity-90 text-foreground"
             )}
           >
             {aiMode

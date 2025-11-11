@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function HomeNav() {
   const currentLanguage = useAppSelector((state) => state.userData.language);
-  const { push } = useRouter();
+  const { back } = useRouter();
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => setMounted(true), []);
@@ -20,7 +20,7 @@ export default function HomeNav() {
         </h1>
 
         <button
-          onClick={() => push("/")}
+          onClick={() => back()}
           className="relative group mr-4 cursor-pointer"
         >
           {languageConfig[currentLanguage].navbar.home}

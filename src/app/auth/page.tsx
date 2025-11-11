@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
-import coverImage from "@/assets/images/netflix.jpg";
-import deadpool from "@/assets/images/dp.jpg";
+import coverImage from "@/assets/images/netflix.webp";
+import deadpool from "@/assets/images/dp.webp";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { authSchema, validateCredentials } from "@/lib/validations";
 import { useRouter } from "next/navigation";
-import cloud from "@/assets/images/cloud.jpg";
+import cloud from "@/assets/images/cloud.webp";
 import { useAppDispatch } from "@/store/hooks";
 import { setUser } from "@/store/features/userSlice";
 import {
@@ -65,17 +65,17 @@ export default function Page() {
 
   return (
     <div className="h-screen w-screen overflow-hidden">
-      <div className="absolute h-full w-full inset-0 z-0">
+      <div className="absolute h-full w-full inset-0 z-0 ">
         <Image
           src={coverImage}
           alt="cover-image"
           fill
-          loading="lazy"
-          priority={false}
-          className="object-cover pointer-events-none"
-          sizes="w-auto h-full"
+          priority
+          placeholder="blur"
+          className="object-cover pointer-events-none opacity-0 transition-opacity duration-500 ease-in-out"
+          onLoad={(event) => event.currentTarget.classList.remove("opacity-0")}
         />
-        <div className="h-full w-full bg-black opacity-70"></div>
+        <div className="h-full w-full bg-black"></div>
       </div>
 
       <div className="h-screen w-screen relative flex items-center">
@@ -96,22 +96,28 @@ export default function Page() {
             <div className="relative z-0 grid md:grid-cols-2 h-full w-full px-0.5">
               <div className="h-full w-full relative hidden md:block">
                 <Image
-                  loading="lazy"
-                  priority={false}
+                  priority={true}
                   src={deadpool}
+                  placeholder="blur"
                   alt="deadpool login img"
-                  className="h-full w-auto object-cover"
+                  className="h-full w-auto object-cover opacity-0 transition-opacity duration-500 ease-in-out"
+                  onLoad={(event) =>
+                    event.currentTarget.classList.remove("opacity-0")
+                  }
                 />
               </div>
 
               <div className="bg-white h-full w-full relative flex justify-center items-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-movie-primary to-tv-primary opacity-80" />
                 <Image
-                  loading="lazy"
-                  priority={false}
+                  priority={true}
                   src={cloud}
+                  placeholder="blur"
                   alt="clouds"
-                  className="absolute object-cover -top-10 mask-b-from-0%"
+                  className="absolute object-cover -top-10 mask-b-from-0% opacity-0 transition-opacity duration-500 ease-in-out"
+                  onLoad={(event) =>
+                    event.currentTarget.classList.remove("opacity-0")
+                  }
                 />
 
                 <div className="z-0 relative w-full md:w-80">
