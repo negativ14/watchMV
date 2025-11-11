@@ -1,4 +1,3 @@
-import Cards from "@/components/Cards";
 import Footer from "@/components/Footer";
 import HomeNav from "@/components/HomeNav";
 import SearchBar from "@/components/SearchBar";
@@ -7,6 +6,9 @@ import fetchTMDB from "@/lib/fetchTMDB";
 import { ai } from "@/lib/ai";
 import { Languages } from "@/types/types";
 import { languageConfig } from "@/lib/languages";
+import { Suspense } from "react";
+import ListSkeleton from "@/components/skeletons/listSkeleton";
+import List from "@/components/List";
 
 export default async function Page({
   searchParams,
@@ -60,34 +62,10 @@ export default async function Page({
 
   let movies: Record<string, unknown>[] = [];
   let tv: Record<string, unknown>[] = [];
-  let movieData;
-  let tvData;
+  const movieUrl = `${BASE_URL}/search/movie?query=${query}&include_adult=${adult}&language=en-US&page=1`;
+  const tvUrl = `${BASE_URL}/search/tv?query=${query}&include_adult=${adult}&language=en-US&page=1`;
 
-  if (aiMode === "false") {
-    const movieUrl = `${BASE_URL}/search/movie?query=${query}&include_adult=${adult}&language=en-US&page=1`;
-    const tvUrl = `${BASE_URL}/search/tv?query=${query}&include_adult=${adult}&language=en-US&page=1`;
-
-    const urls = [movieUrl, tvUrl];
-
-    const urlsPromises = urls.map((url) => fetchTMDB(url));
-
-    const urlsResults = await Promise.allSettled(urlsPromises);
-
-    const successfullMovies = urlsResults[0];
-    const successfullTV = urlsResults[1];
-
-    if (successfullMovies?.status === "fulfilled") {
-      movieData = successfullMovies?.value;
-      movies = successfullMovies?.value?.data?.results;
-    } else {
-      movieData = { error: true, empty: true, data: null };
-    }
-
-    if (successfullTV?.status === "fulfilled") {
-      tvData = successfullTV?.value;
-      tv = successfullTV?.value?.data?.results;
-    }
-  } else {
+  if (aiMode === "true") {
     try {
       const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
@@ -138,7 +116,6 @@ export default async function Page({
       console.error("Could not parse AI JSON:", error);
     }
   }
-
   return (
     <div className="relative">
       <div className="absolute inset-y-0 left-0 right-0 flex justify-center pointer-events-none">
@@ -159,21 +136,7 @@ export default async function Page({
       </div>
 
       <div className="min-h-[60vh] border-x max-w-7xl mx-auto">
-        {((movieData?.error && tvData?.error) ||
-          (movieData?.empty && tvData?.empty)) && (
-          <div className="border-b border-dashed border-foreground/30 mt-4 ">
-            <div className="max-w-7xl mx-auto border-x border-b">
-              <h1 className="tracking-tight px-4 py-1 text-xl flex justify-center md:items-center text-muted-foreground min-h-[60vh]">
-                {languageConfig[language].searchBar.dataEmptyOrError.error1}
-                <br />
-                {languageConfig[language].searchBar.dataEmptyOrError.error2}
-              </h1>
-              <div className="h-10 border-t" />
-            </div>
-          </div>
-        )}
-
-        {movies?.length === 0 && tv?.length === 0 && (
+        {aiMode === "true" && movies?.length === 0 && tv?.length === 0 && (
           <div className="border-b border-dashed border-foreground/30 mt-6 min-h-[60vh] flex items-center justify-center">
             <div className="max-w-7xl mx-auto border-x text-center px-4">
               <h1 className="text-xl tracking-tight text-muted-foreground leading-relaxed">
@@ -187,25 +150,22 @@ export default async function Page({
 
         <div className="border-b border-foreground/30 border-dashed">
           <div className="max-w-7xl mx-auto">
-            {movies?.length > 0 && (
-              <div className="border-b border-x">
-                <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
-                  Movies
-                </h2>
-                <div className="overflow-x-scroll scroll-hide">
-                  <Cards list={movies} />
-                </div>
-              </div>
+            {movies?.length > 0 && aiMode === "true" ? (
+              <List title="Movies" dataList={movies} />
+            ) : (
+              <Suspense fallback={<ListSkeleton />}>
+                {" "}
+                <List title="Movies" url={movieUrl} />{" "}
+              </Suspense>
             )}
-            {tv?.length > 0 && (
-              <div className="border-x">
-                <h2 className="px-4 py-1 text-2xl font-sembold tracking-tight border-b">
-                  TV Series
-                </h2>
-                <div className="overflow-x-scroll scroll-hide">
-                  <Cards list={tv} />
-                </div>
-              </div>
+            
+            {tv?.length > 0 && aiMode === "true" ? (
+              <List title="TV Series" dataList={tv} />
+            ) : (
+              <Suspense fallback={<ListSkeleton />}>
+                {" "}
+                <List title="TV Series" url={tvUrl} />{" "}
+              </Suspense>
             )}
           </div>
         </div>

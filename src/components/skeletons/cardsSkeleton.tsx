@@ -6,10 +6,10 @@ export default function CardsSkeleton() {
       {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
-          className="flex-shrink-0 flex flex-col justify-between h-[280px] w-[160px]"
+          className="flex-shrink-0 flex flex-col gap-2 h-[280px] w-[160px]"
         >
           <Skeleton className="h-[220px] w-full rounded-lg" />
-          <Skeleton className="h-4 w-3/4 mt-2" />
+          <Skeleton className="h-4 w-3/4" />
         </div>
       ))}
     </div>
