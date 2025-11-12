@@ -15,6 +15,7 @@ export default async function List({
   if (!dataList) {
     data = await fetchCache(url || "");
     list = data?.results;
+    console.log("the data is", title, list);
   }
 
   const finalList = dataList?.length ? dataList : list;

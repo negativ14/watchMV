@@ -86,11 +86,11 @@ export default async function Page({
         <div className="border-b border-foreground/30 border-dashed h-full">
           <div className="max-w-7xl mx-auto h-full">
             {aiMode === "true" ? (
-              <Suspense fallback={<AIResultsSkeleton />}>
+              <Suspense key={`ai-${query}`} fallback={<AIResultsSkeleton />}>
                 <AIResultsWrapper query={query} />
               </Suspense>
             ) : (
-              <div>
+              <div key={`tmdb-${query}`}>
                 <Suspense fallback={<ListSkeleton />}>
                   <List title="Movies" url={movieUrl} />
                 </Suspense>
