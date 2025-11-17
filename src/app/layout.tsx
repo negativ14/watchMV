@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "watchMV",
     images: [
       {
-        url: "/page_preview.png",
+        url: "/preview_page.png",
         width: 512,
         height: 512,
         alt: "watchMV Logo",
